@@ -3,498 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Production Shooting Checklist Dashboard</title>
+    <title>DATBIKE TVC | SHOOTING DASHBOARD 06.09.26</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .sticky-nav { position: sticky; top: 0; z-index: 50; }
-        .card { transition: all 0.3s ease; }
-        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .progress-bar { transition: width 0.5s ease-in-out; }
-        @media print {
-            .no-print { display: none; }
-            .print-only { display: block; }
-            body { background: white; }
-        }
+        :root { --brand-orange: #ff4d00; --brand-dark: #0a0a0a; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; color: var(--brand-dark); }
+        .oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        
+        /* Sidebar */
+        .sidebar { width: 280px; height: 100vh; position: fixed; left: 0; top: 0; background: white; border-right: 1px solid #e5e5e5; z-index: 100; overflow-y: auto; }
+        .nav-item { padding: 14px 24px; display: flex; align-items: center; gap: 12px; color: #666; cursor: pointer; border-bottom: 1px solid #f8f8f8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-item:hover { background: #fff5f2; color: var(--brand-orange); }
+        .nav-item.active { background: var(--brand-dark); color: white; }
+
+        /* Tables */
+        .main-content { margin-left: 280px; padding: 0 0 100px 0; }
+        .status-todo { background: #f3f4f6; color: #6b7280; }
+        .status-doing { background: #fef3c7; color: #d97706; font-weight: bold; }
+        .status-done { background: #dcfce7; color: #166534; font-weight: bold; }
+        .status-blocked { background: #fee2e2; color: #b91c1c; font-weight: bold; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        
+        .priority-high { color: var(--brand-orange); font-weight: 900; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #fdfdfd; text-align: left; padding: 12px; border-bottom: 2px solid #eee; text-transform: uppercase; color: #888; font-size: 10px; }
+        td { padding: 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+        tr:hover { background-color: #fafafa; }
+
+        .sticky-header { position: sticky; top: 0; background: white; z-index: 50; border-bottom: 1px solid #ddd; }
     </style>
 </head>
-<body class="pb-20">
+<body>
 
-    <!-- HEADER -->
-    <header class="bg-slate-900 text-white p-6 shadow-xl">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">SHOOTING DAY — PRODUCTION CHECKLIST</h1>
-                <p class="text-slate-400 flex items-center gap-2">
-                    <i class="far fa-calendar-alt"></i> Ngày: 07/09/2026 | 
-                    <span id="lastSaved" class="text-xs italic text-slate-500">Last saved: Just now</span>
-                </p>
-            </div>
-            <div class="flex gap-3 mt-4 md:mt-0 no-print">
-                <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm transition">
-                    <i class="fas fa-file-code mr-2"></i>Export JSON
-                </button>
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm transition">
-                    <i class="fas fa-print mr-2"></i>Print PDF
-                </button>
-                <button onclick="resetData()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-sm transition">
-                    <i class="fas fa-undo mr-2"></i>Reset Day
-                </button>
-            </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar no-print">
+        <div class="p-8 border-b border-gray-100 bg-black text-white">
+            <div class="text-[10px] text-orange-500 font-black tracking-[4px] uppercase mb-1">Datbike TVC</div>
+            <div class="oswald text-2xl">Quantum S</div>
+            <div class="text-[10px] text-gray-500 mt-2">Shooting Day 1: 06.09.26</div>
         </div>
-    </header>
+        <nav class="mt-4">
+            <div onclick="showSection('dashboard')" class="nav-item active" id="nav-dashboard"><i class="fas fa-th-large w-4"></i> Dashboard Tổng quan</div>
+            <div onclick="showSection('Bích Châu')" class="nav-item" id="nav-Bích Châu"><i class="fas fa-user w-4"></i> Bích Châu (Logistics)</div>
+            <div onclick="showSection('Thu Giang')" class="nav-item" id="nav-Thu Giang"><i class="fas fa-paint-brush w-4"></i> Thu Giang (Art/Set)</div>
+            <div onclick="showSection('Vân Anh')" class="nav-item" id="nav-Vân Anh"><i class="fas fa-tshirt w-4"></i> Vân Anh (Stylist)</div>
+            <div onclick="showSection('Nguyên')" class="nav-item" id="nav-Nguyên"><i class="fas fa-camera w-4"></i> Nguyên (Equipment)</div>
+            <div onclick="showSection('Thùy Em')" class="nav-item" id="nav-Thùy Em"><i class="fas fa-briefcase w-4"></i> Thùy Em (Account)</div>
+            <div onclick="showSection('Hân Ngô')" class="nav-item" id="nav-Hân Ngô"><i class="fas fa-tasks w-4"></i> Hân Ngô (Producer)</div>
+        </nav>
+    </aside>
 
-    <!-- NAVIGATION FIXED -->
-    <nav class="sticky-nav bg-white border-b border-slate-200 shadow-sm no-print">
-        <div class="container mx-auto px-4 py-3 flex overflow-x-auto gap-4 no-scrollbar">
-            <a href="#overview" class="whitespace-nowrap px-3 py-1 bg-slate-100 rounded-full text-sm font-medium hover:bg-slate-200 transition">Overview</a>
-            <a href="#Bích Châu" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Bích Châu</a>
-            <a href="#Thu Giang" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Thu Giang</a>
-            <a href="#Vân Anh" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Vân Anh</a>
-            <a href="#Nguyên" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Nguyên</a>
-            <a href="#Thùy Em" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Thùy Em</a>
-            <a href="#Hân Ngô" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium">Hân Ngô</a>
-            <a href="#other-lists" class="whitespace-nowrap px-3 py-1 hover:text-blue-600 transition text-sm font-medium text-slate-500">Timeline & Lists</a>
-        </div>
-    </nav>
+    <main class="main-content">
+        <!-- HEADER SECTION -->
+        <header class="bg-[#0a0a0a] text-white p-10 pt-16">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h1 class="oswald text-7xl font-black leading-none italic">PRODUCTION<br><span class="text-orange-500">CONTROL HUB</span></h1>
+                </div>
+                <div class="text-right no-print">
+                    <button onclick="window.print()" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 text-xs font-bold uppercase rounded-sm transition">
+                        Export Callsheet Report
+                    </button>
+                </div>
+            </div>
 
-    <main class="container mx-auto px-4 py-8">
+            <!-- KEY INFO GRID -->
+            <div class="grid grid-cols-4 gap-1 mt-12 border border-white/10">
+                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Director Call</div><div class="font-bold">05:00 SA</div></div>
+                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Shooting Start</div><div class="font-bold text-orange-500">05:30 SA</div></div>
+                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Location 1</div><div class="font-bold">Cầu Ba Son</div></div>
+                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Sunrise / Sunset</div><div class="font-bold">05:50 / 18:00</div></div>
+            </div>
+        </header>
 
-        <!-- DASHBOARD OVERVIEW -->
-        <section id="overview" class="mb-10 grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <p class="text-xs text-slate-500 uppercase font-bold">Total Tasks</p>
-                <h3 id="statTotal" class="text-2xl font-bold">0</h3>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <p class="text-xs text-green-600 uppercase font-bold">Completed</p>
-                <h3 id="statDone" class="text-2xl font-bold text-green-600">0</h3>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <p class="text-xs text-yellow-600 uppercase font-bold">Doing</p>
-                <h3 id="statDoing" class="text-2xl font-bold text-yellow-600">0</h3>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <p class="text-xs text-blue-600 uppercase font-bold">To-do</p>
-                <h3 id="statTodo" class="text-2xl font-bold text-blue-600">0</h3>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 col-span-2 md:col-span-1">
-                <p class="text-xs text-slate-500 uppercase font-bold">Overall Progress</p>
-                <div class="flex items-center gap-2">
-                    <div class="w-full bg-slate-200 rounded-full h-3">
-                        <div id="overallBar" class="bg-blue-600 h-3 rounded-full progress-bar" style="width: 0%"></div>
+        <!-- DASHBOARD VIEW -->
+        <div id="section-dashboard" class="p-10 section-view">
+            <h2 class="oswald text-3xl mb-8 border-b-4 border-black inline-block">Overview Dashboard</h2>
+            
+            <!-- Overall Progress -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white p-8 border border-gray-200">
+                    <div class="text-xs font-bold text-gray-400 uppercase mb-4">Overall Completion</div>
+                    <div class="flex items-end gap-2">
+                        <span id="overall-pct" class="text-6xl font-black text-black leading-none">0%</span>
+                        <span class="text-orange-500 font-bold mb-1">TOTAL</span>
                     </div>
-                    <span id="overallPct" class="text-sm font-bold">0%</span>
+                </div>
+                <div class="md:col-span-2 bg-white p-8 border border-gray-200">
+                    <div class="text-xs font-bold text-gray-400 uppercase mb-4">Personnel Status Matrix</div>
+                    <div id="status-matrix" class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- JS injected -->
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- FILTER & SEARCH -->
-        <section class="mb-6 flex flex-wrap gap-4 items-center justify-between no-print">
-            <div class="relative w-full md:w-64">
-                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="searchInput" oninput="renderAll()" placeholder="Tìm công việc..." class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
-            </div>
-            <div class="flex gap-2">
-                <select id="filterPriority" onchange="renderAll()" class="px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none">
-                    <option value="All">All Priority</option>
-                    <option value="High">High Priority</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
+            <!-- SEARCH & FILTER -->
+            <div class="flex gap-4 mb-6 no-print">
+                <div class="relative flex-1">
+                    <input type="text" id="globalSearch" oninput="renderAll()" placeholder="Tìm kiếm hạng mục, nhân sự, bối cảnh..." class="w-full bg-white border border-gray-300 px-10 py-3 text-sm focus:border-orange-500 outline-none">
+                    <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                </div>
+                <select id="globalFilter" onchange="renderAll()" class="bg-black text-white px-6 py-3 text-xs font-bold uppercase outline-none">
+                    <option value="ALL">All Tasks</option>
+                    <option value="TODO">To-do Only</option>
+                    <option value="DOING">Currently Doing</option>
+                    <option value="BLOCKED">Blocked ⚠️</option>
+                    <option value="HIGH">High Priority</option>
                 </select>
-                <select id="filterStatus" onchange="renderAll()" class="px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none">
-                    <option value="All">All Status</option>
-                    <option value="Todo">Todo</option>
-                    <option value="Doing">Doing</option>
-                    <option value="Done">Done</option>
-                </select>
-                <button onclick="openAddTaskModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
-                    <i class="fas fa-plus mr-2"></i>Add Task
-                </button>
             </div>
-        </section>
 
-        <!-- PERSONNEL SECTIONS -->
-        <div id="personnelGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Dynamic content injected here -->
+            <!-- COMPANY MOVE TIMELINE (Directly from PDF) -->
+            <div class="bg-orange-50 border border-orange-200 p-8 mb-12">
+                <h3 class="oswald text-xl mb-6 flex items-center gap-2"><i class="fas fa-truck-moving"></i> Company Move Strategy</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="border-l-2 border-orange-500 pl-4">
+                        <div class="text-[10px] font-bold text-orange-600 uppercase">Move 1 (08:10 - 09:25)</div>
+                        <div class="text-sm font-bold mt-1">CẦU BA SON ➔ BÃI ĐẤT SÀI GÒN</div>
+                        <div class="text-xs text-gray-500 mt-1">Chuẩn bị vũng nước, quay Slomo splash xe.</div>
+                    </div>
+                    <div class="border-l-2 border-orange-500 pl-4">
+                        <div class="text-[10px] font-bold text-orange-600 uppercase">Move 2 (13:10 - 14:55)</div>
+                        <div class="text-sm font-bold mt-1">PHÍA SAU CẦU PHÚ MỸ ➔ STYLIST STUDIO</div>
+                        <div class="text-xs text-gray-500 mt-1">Chuyển toàn bộ máy và xe về Studio (Garage).</div>
+                    </div>
+                    <div class="border-l-2 border-orange-500 pl-4">
+                        <div class="text-[10px] font-bold text-orange-600 uppercase">Charging (Rolling)</div>
+                        <div class="text-sm font-bold mt-1">CẮM SẠC HERO BIKE</div>
+                        <div class="text-xs text-gray-500 mt-1">Ưu tiên sạc Quantum S ngay khi về bối cảnh mới.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="personnel-tables-container" class="space-y-16">
+                <!-- Personnel tables will be injected here -->
+            </div>
         </div>
-
-        <!-- SPECIAL LISTS SECTION -->
-        <section id="other-lists" class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Today's Priorities -->
-            <div class="bg-amber-50 border border-amber-200 p-6 rounded-2xl shadow-sm">
-                <h3 class="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
-                    <i class="fas fa-star text-amber-500"></i> Today's Critical Priorities
-                </h3>
-                <ul id="criticalList" class="space-y-3">
-                    <!-- High priority tasks here -->
-                </ul>
-            </div>
-
-            <!-- Shooting Timeline -->
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-clock text-blue-600"></i> Shooting Timeline
-                </h3>
-                <div class="space-y-4 border-l-2 border-slate-100 ml-4 pl-6 relative">
-                    <div class="relative"><span class="absolute -left-8 top-1 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow"></span> 05:00 - Call Sheet / Basecamp Setup</div>
-                    <div class="relative"><span class="absolute -left-8 top-1 w-4 h-4 bg-blue-400 rounded-full border-4 border-white shadow"></span> 06:00 - Briefing Toàn Đoàn & Safety</div>
-                    <div class="relative"><span class="absolute -left-8 top-1 w-4 h-4 bg-orange-400 rounded-full border-4 border-white shadow"></span> 06:30 - Shoot Cầu Ba Son (Dolly Zoom)</div>
-                    <div class="relative"><span class="absolute -left-8 top-1 w-4 h-4 bg-slate-400 rounded-full border-4 border-white shadow"></span> 11:30 - Company Move (Studio / Vũng Nước)</div>
-                    <div class="relative"><span class="absolute -left-8 top-1 w-4 h-4 bg-green-500 rounded-full border-4 border-white shadow"></span> 14:00 - Shoot Vũng Nước & Beauty Shots</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ADDITIONAL MODULES -->
-        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fas fa-camera"></i> Shot List Highlight</h4>
-                <ul class="text-sm space-y-2 text-slate-600">
-                    <li class="flex gap-2 border-b pb-1"><span>1.</span> <span>Dolly Zoom Ba Son (Cực nhanh)</span></li>
-                    <li class="flex gap-2 border-b pb-1"><span>2.</span> <span>Beauty Shots Hero Bike (60fps)</span></li>
-                    <li class="flex gap-2 border-b pb-1"><span>3.</span> <span>Vũng Nước Splash (Phantom 500fps)</span></li>
-                </ul>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fas fa-tools"></i> Equipment Check</h4>
-                <div class="grid grid-cols-2 gap-2 text-sm">
-                    <label class="flex items-center gap-2"><input type="checkbox" checked> Phantom 4K</label>
-                    <label class="flex items-center gap-2"><input type="checkbox" checked> Tracking Car</label>
-                    <label class="flex items-center gap-2"><input type="checkbox"> Laowa Lens</label>
-                    <label class="flex items-center gap-2"><input type="checkbox" checked> Intercom (Full)</label>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fas fa-sticky-note"></i> Important Notes</h4>
-                <textarea class="w-full h-24 text-sm bg-slate-50 border-none p-2 rounded focus:ring-1 focus:ring-blue-500 outline-none" placeholder="Nhập ghi chú quan trọng trong ngày..."></textarea>
-            </div>
-        </section>
-
-        <!-- END OF DAY -->
-        <section class="mt-8 bg-slate-800 text-white p-8 rounded-3xl shadow-lg">
-            <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                <i class="fas fa-flag-checkered text-green-400"></i> End of Day Checklist
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label class="flex items-center gap-3 bg-slate-700/50 p-3 rounded-lg cursor-pointer hover:bg-slate-700 transition">
-                    <input type="checkbox" class="w-5 h-5 accent-green-500"> Data Backup (DIT check)
-                </label>
-                <label class="flex items-center gap-3 bg-slate-700/50 p-3 rounded-lg cursor-pointer hover:bg-slate-700 transition">
-                    <input type="checkbox" class="w-5 h-5 accent-green-500"> Thu hồi bộ đàm & sạc lại
-                </label>
-                <label class="flex items-center gap-3 bg-slate-700/50 p-3 rounded-lg cursor-pointer hover:bg-slate-700 transition">
-                    <input type="checkbox" class="w-5 h-5 accent-green-500"> Trả xe Hero Bike nguyên vẹn
-                </label>
-                <label class="flex items-center gap-3 bg-slate-700/50 p-3 rounded-lg cursor-pointer hover:bg-slate-700 transition">
-                    <input type="checkbox" class="w-5 h-5 accent-green-500"> Dọn dẹp vệ sinh Basecamp/Studio
-                </label>
-            </div>
-        </section>
-
     </main>
 
-    <!-- MODAL ADD/EDIT -->
-    <div id="taskModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[100] backdrop-blur-sm p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 id="modalTitle" class="font-bold text-lg">Add New Task</h3>
-                <button onclick="closeTaskModal()" class="text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <form id="taskForm" class="p-6 space-y-4">
-                <input type="hidden" id="taskId">
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1">Công việc *</label>
-                    <input type="text" id="taskTitle" required class="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Nhân sự *</label>
-                        <select id="taskOwner" class="w-full px-4 py-2 border rounded-lg outline-none">
-                            <option value="Bích Châu">Bích Châu</option>
-                            <option value="Thu Giang">Thu Giang</option>
-                            <option value="Vân Anh">Vân Anh</option>
-                            <option value="Nguyên">Nguyên</option>
-                            <option value="Thùy Em">Thùy Em</option>
-                            <option value="Hân Ngô">Hân Ngô</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Độ ưu tiên</label>
-                        <select id="taskPriority" class="w-full px-4 py-2 border rounded-lg outline-none">
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1">Mô tả / Deadline</label>
-                    <textarea id="taskDesc" class="w-full px-4 py-2 border rounded-lg outline-none h-20" placeholder="Chi tiết công việc và thời gian..."></textarea>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition">Lưu Công Việc</button>
-            </form>
-        </div>
-    </div>
-
     <script>
-        // DATA INITIALIZATION
-        let tasks = [];
-        const owners = ["Bích Châu", "Thu Giang", "Vân Anh", "Nguyên", "Thùy Em", "Hân Ngô"];
+        // DATA STRUCTURE MAPPED FROM PDF CALLSHEET
+        let tasks = [
+            // BÍCH CHÂU - Logistics & Catering
+            { id: 1, owner: "Bích Châu", item: "Catering: Ăn sáng đoàn", detail: "Setup khu vực ăn sáng tại Basecamp Ba Son", time: "04:00 - 05:30", priority: "Medium", status: "TODO", notes: "Phục vụ 50 suất" },
+            { id: 2, owner: "Bích Châu", item: "Walkie Channels Setup", detail: "Phát đàm: #1 AD/Prod, #2 Camera, #3 Art, #5 Client", time: "04:30", priority: "High", status: "TODO", notes: "Check pin dự phòng" },
+            { id: 3, owner: "Bích Châu", item: "Client Call Support", detail: "Đón tiếp Client/Agency tại Cầu Ba Son", time: "05:00", priority: "High", status: "TODO", notes: "Chuẩn bị ghế/nước" },
+            { id: 4, owner: "Bích Châu", item: "Lunch Break Setup", detail: "Chuẩn bị khu vực ăn trưa tại bối cảnh Bãi Đất", time: "10:40 - 11:10", priority: "Medium", status: "TODO", notes: "Thực đơn đã duyệt" },
+            { id: 5, owner: "Bích Châu", item: "Rolling Dinner Control", detail: "Catering tại Stylist Studio", time: "17:40 - 18:10", priority: "Medium", status: "TODO", notes: "" },
 
-        const defaultTasks = [
-            // Bích Châu
-            { id: 1, owner: "Bích Châu", title: "Phát đàm, intercom cho mng đầy đủ", desc: "Nhớ note lại tên người nhận đảm bảo thu hồi đủ", priority: "High", status: "Todo" },
-            { id: 2, owner: "Bích Châu", title: "Sắp xếp basecamp Ba Son", desc: "Chỗ ngồi Client/Agency sát đường để bắt sóng tốt", priority: "High", status: "Todo" },
-            { id: 3, owner: "Bích Châu", title: "Dán Board Canva/Storyboard", desc: "Dán đầy đủ tại basecamp", priority: "Medium", status: "Todo" },
-            { id: 4, owner: "Bích Châu", title: "Setup Basecamp mới tại Studio", desc: "Move trước đoàn để setup ổn định chỗ ngồi", priority: "High", status: "Todo" },
-            { id: 5, owner: "Bích Châu", title: "Check khu vực bắt sóng đàm Studio", desc: "Đảm bảo intercom thông suốt", priority: "Medium", status: "Todo" },
+            // THU GIANG - Art & Set Design
+            { id: 6, owner: "Thu Giang", item: "Set Ba Son (Location 1)", detail: "Check đạo cụ Xe Quantum S + Mũ bảo hiểm", time: "05:30 - 08:10", priority: "High", status: "TODO", notes: "Xe phải bóng loáng" },
+            { id: 7, owner: "Thu Giang", item: "Vũng Nước Splash (Bãi Đất)", detail: "Setup hố nước, nước bắn vào camera (Shot 26, 27)", time: "09:25 - 10:40", priority: "High", status: "TODO", notes: "Check vòi xịt" },
+            { id: 8, owner: "Thu Giang", item: "Green Screen Setup", detail: "Dựng phông xanh + Platform (Shot 36, 34)", time: "11:10 - 13:10", priority: "High", status: "TODO", notes: "Căng phẳng phông" },
+            { id: 9, owner: "Thu Giang", item: "Garage Set (Studio)", detail: "Setup interior Garage, Khung lưới sắt (Shot 3, 5)", time: "14:55 - 17:40", priority: "High", status: "TODO", notes: "Style Industrial" },
+            { id: 10, owner: "Thu Giang", item: "Logo Display", detail: "Góc quay logo trên thân xe (Shot 4.1, 4.2)", time: "17:40 - 19:10", priority: "Medium", status: "TODO", notes: "" },
 
-            // Thu Giang
-            { id: 6, owner: "Thu Giang", title: "Ổn định set Cầu Ba Son", desc: "Xong việc move qua bối cảnh Vũng Nước ngay", priority: "High", status: "Todo" },
-            { id: 7, owner: "Thu Giang", title: "Check hố/trải bạt & test xịt nước", desc: "Tại bối cảnh Vũng Nước", priority: "High", status: "Todo" },
-            { id: 8, owner: "Thu Giang", title: "Kiểm tra bục bê tông & hố 20cm", desc: "Đảm bảo đủ điều kiện quay", priority: "High", status: "Todo" },
-            { id: 9, owner: "Thu Giang", title: "Setup phông xanh backup", desc: "Dựng sẵn phông xanh tại bối cảnh", priority: "Medium", status: "Todo" },
-            { id: 10, owner: "Thu Giang", title: "Check Trần Gara & Đồng bộ design", priority: "High", status: "Todo" },
-            { id: 11, owner: "Thu Giang", title: "Tiến độ treo đèn tại Studio", priority: "High", status: "Todo" },
+            // VÂN ANH - Stylist & Wardrobe
+            { id: 11, owner: "Vân Anh", item: "Talent Prep", detail: "Makeup & Hair hoàn thiện trước giờ On Set", time: "05:00 - 06:00", priority: "High", status: "TODO", notes: "" },
+            { id: 12, owner: "Vân Anh", item: "Mũ bảo hiểm Quantum", detail: "Chuẩn bị mũ bảo hiểm chính + Rig Mũ (Shot 8)", time: "05:30", priority: "High", status: "TODO", notes: "Check khớp Rig" },
+            { id: 13, owner: "Vân Anh", item: "Găng tay Talent", detail: "Check găng tay cho shot cận (Shot 7)", time: "15:25", priority: "Medium", status: "TODO", notes: "" },
+            { id: 14, owner: "Vân Anh", item: "Mũ đục lỗ (Cận mắt)", detail: "Chuẩn bị mũ bảo hiểm đục lỗ (Shot 21.2)", time: "12:40", priority: "High", status: "TODO", notes: "Cực kỳ quan trọng" },
 
-            // Vân Anh
-            { id: 12, owner: "Vân Anh", title: "Mặc đồ cho Talent (Bộ đã sửa)", priority: "High", status: "Todo" },
-            { id: 13, owner: "Vân Anh", title: "Mặc đồ cho Stunt (Bộ chưa sửa)", priority: "High", status: "Todo" },
-            { id: 14, owner: "Vân Anh", title: "Check rắc-co & phụ kiện", desc: "Bao tay đen/cam, áo thun đen bên trong", priority: "High", status: "Todo" },
-            { id: 15, owner: "Vân Anh", title: "Check mũ bảo hiểm Full-face", desc: "Đã dán decal đầy đủ", priority: "High", status: "Todo" },
-            { id: 16, owner: "Vân Anh", title: "Lều standby sẵn sàng", priority: "Medium", status: "Todo" },
+            // NGUYÊN - Equipment & Camera
+            { id: 15, owner: "Nguyên", item: "Raptor Team Ready", detail: "Tracking Car + Zolly gear setup tại Ba Son", time: "04:00", priority: "High", status: "TODO", notes: "Check intercom với xe" },
+            { id: 16, owner: "Nguyên", item: "Flycam Setup", detail: "Thay đổi set up sang Flycam (Location 1)", time: "07:30 - 08:10", priority: "High", status: "TODO", notes: "Check pin Flycam" },
+            { id: 17, owner: "Nguyên", item: "Slomo Gear (Slider/Rig)", detail: "Setup Rig đuôi xe + Low angle Slomo (Bãi đất)", time: "09:25 - 10:40", priority: "High", status: "TODO", notes: "Shot 26, 27" },
+            { id: 18, owner: "Nguyên", item: "Loawa Lens Setup", detail: "Push in đặc tả mắt (Shot 21.2)", time: "12:40", priority: "Medium", status: "TODO", notes: "" },
+            { id: 19, owner: "Nguyên", item: "Jib Arm / Slider Garage", detail: "Dolly out, Camera Roll, Jib Arm tại Studio", time: "14:55 - 17:40", priority: "High", status: "TODO", notes: "Shot 5, 7, 9, 8, 3" },
 
-            // Nguyên
-            { id: 17, owner: "Nguyên", title: "Tập hợp đội Cascader (Lock đường)", desc: "3 xe 16 chỗ + xe máy tập trung", priority: "High", status: "Todo" },
-            { id: 18, owner: "Nguyên", title: "Dán biển số xe 'Làm Phim'", desc: "Toàn bộ xe đoàn và xe lock đường để tránh phạt nguội", priority: "High", status: "Todo" },
-            { id: 19, owner: "Nguyên", title: "Phân bổ chốt chặn (Nguyễn Du/Tôn Đức Thắng)", priority: "High", status: "Todo" },
-            { id: 20, owner: "Nguyên", title: "Lau chùi Hero Bike (Quantum S xám)", desc: "Ưu tiên số 1, phải cực sạch cho beauty shots", priority: "High", status: "Todo" },
-            { id: 21, owner: "Nguyên", title: "Check pin xe 100%", priority: "High", status: "Todo" },
-            { id: 22, owner: "Nguyên", title: "Điều phối vận chuyển xe thớt về studio", priority: "High", status: "Todo" },
+            // THÙY EM - Account / Client Coordination
+            { id: 20, owner: "Thùy Em", item: "Client Briefing", detail: "Briefing góc máy Tracking Car Ba Son cho Agency", time: "05:30", priority: "Medium", status: "TODO", notes: "" },
+            { id: 21, owner: "Thùy Em", item: "Review Shot 36 (Cúp Datbike)", detail: "Check cảnh toàn trên đỉnh đồi (Green Screen)", time: "11:10", priority: "High", status: "TODO", notes: "Agency ký duyệt" },
+            { id: 22, owner: "Thùy Em", item: "Check Plate CGI", detail: "Đảm bảo các shot CGI (1, 2) đúng ý đồ brand", time: "17:40", priority: "High", status: "TODO", notes: "" },
 
-            // Thùy Em
-            { id: 23, owner: "Thùy Em", title: "Check asset trên người talent", desc: "Trước giờ shoot, cho khách check", priority: "High", status: "Todo" },
-            { id: 24, owner: "Thùy Em", title: "Ngồi điều phối với Client/Agency", priority: "Medium", status: "Todo" },
-            { id: 25, owner: "Thùy Em", title: "Theo dõi tiến độ & Push set", priority: "High", status: "Todo" },
-            { id: 26, owner: "Thùy Em", title: "Chia nhân sự kỹ thuật khách hàng", desc: "1 về studio, 1 qua vũng nước", priority: "High", status: "Todo" },
-
-            // Hân Ngô
-            { id: 27, owner: "Hân Ngô", title: "Check Post Supervisor & Plate", desc: "Đảm bảo đủ plate cần thiết cho hậu kỳ", priority: "High", status: "Todo" },
-            { id: 28, owner: "Hân Ngô", title: "Check tiến độ BG AI & Editor set", priority: "High", status: "Todo" },
-            { id: 29, owner: "Hân Ngô", title: "Briefing toàn đoàn với anh Bi DOP", desc: "Tuyến đường, an toàn, trục đứng đô thị", priority: "High", status: "Todo" },
-            { id: 30, owner: "Hân Ngô", title: "Đóng gói thiết bị Phantom/Jib/Slider", desc: "Bọc chống sốc kỹ trước khi di chuyển", priority: "High", status: "Todo" },
+            // HÂN NGÔ - Producer / Wrap Control
+            { id: 23, owner: "Hân Ngô", item: "Safety Control", detail: "Kiểm soát an toàn di chuyển trên Cầu Ba Son", time: "05:30 - 08:10", priority: "High", status: "TODO", notes: "Walkie liên tục" },
+            { id: 24, owner: "Hân Ngô", item: "Company Move Move 1", detail: "Điều phối đoàn di chuyển về Bãi Đất", time: "08:10 - 09:25", priority: "High", status: "TODO", notes: "" },
+            { id: 25, owner: "Hân Ngô", item: "Company Move Move 2", detail: "Điều phối đoàn về Stylist Studio", time: "13:10 - 14:55", priority: "High", status: "TODO", notes: "" },
+            { id: 26, owner: "Hân Ngô", item: "Wrap Production", detail: "Kiểm tra dữ liệu (DIT) và thu hồi thiết bị", time: "19:10", priority: "High", status: "TODO", notes: "Cảm ơn toàn đoàn" }
         ];
 
-        // CORE FUNCTIONS
+        const personnel = ["Bích Châu", "Thu Giang", "Vân Anh", "Nguyên", "Thùy Em", "Hân Ngô"];
+
         function init() {
-            const saved = localStorage.getItem('prod_checklist_data');
-            if (saved) {
-                tasks = JSON.parse(saved);
-            } else {
-                tasks = defaultTasks;
-                saveData();
-            }
+            const saved = localStorage.getItem('datbike_prod_v2_final');
+            if (saved) tasks = JSON.parse(saved);
             renderAll();
         }
 
         function saveData() {
-            localStorage.setItem('prod_checklist_data', JSON.stringify(tasks));
-            const now = new Date();
-            document.getElementById('lastSaved').innerText = `Last saved: ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            localStorage.setItem('datbike_prod_v2_final', JSON.stringify(tasks));
+        }
+
+        function updateStatus(id, newStatus) {
+            const task = tasks.find(t => t.id === id);
+            task.status = newStatus;
+            saveData();
+            renderAll();
         }
 
         function renderAll() {
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            const filterPriority = document.getElementById('filterPriority').value;
-            const filterStatus = document.getElementById('filterStatus').value;
+            const container = document.getElementById('personnel-tables-container');
+            const search = document.getElementById('globalSearch').value.toLowerCase();
+            const filter = document.getElementById('globalFilter').value;
+            container.innerHTML = '';
 
-            const grid = document.getElementById('personnelGrid');
-            grid.innerHTML = '';
-
-            owners.forEach(owner => {
+            personnel.forEach(owner => {
                 const ownerTasks = tasks.filter(t => t.owner === owner);
-                const filteredTasks = ownerTasks.filter(t => {
-                    const matchesSearch = t.title.toLowerCase().includes(searchQuery) || (t.desc || '').toLowerCase().includes(searchQuery);
-                    const matchesPriority = filterPriority === 'All' || t.priority === filterPriority;
-                    const matchesStatus = filterStatus === 'All' || t.status === filterStatus;
-                    return matchesSearch && matchesPriority && matchesStatus;
+                const filtered = ownerTasks.filter(t => {
+                    const matchesSearch = t.item.toLowerCase().includes(search) || t.detail.toLowerCase().includes(search);
+                    const matchesFilter = filter === 'ALL' || 
+                                          (filter === 'HIGH' && t.priority === 'High') || 
+                                          (t.status === filter);
+                    return matchesSearch && matchesFilter;
                 });
 
-                const completedCount = ownerTasks.filter(t => t.status === 'Done').length;
-                const progress = ownerTasks.length ? Math.round((completedCount / ownerTasks.length) * 100) : 0;
+                if (filtered.length === 0 && search === "" && filter === "ALL") return;
 
-                const card = document.createElement('div');
-                card.id = owner;
-                card.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card';
-                card.innerHTML = `
-                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">${owner}</h2>
-                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">${ownerTasks.length} Tasks assigned</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-lg font-black text-blue-600">${progress}%</span>
-                            <div class="w-24 bg-slate-200 h-2 rounded-full mt-1">
-                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${progress}%"></div>
-                            </div>
-                        </div>
+                const tableDiv = document.createElement('div');
+                tableDiv.id = `view-${owner}`;
+                tableDiv.innerHTML = `
+                    <div class="flex justify-between items-end mb-4 border-b-2 border-black pb-2">
+                        <h3 class="oswald text-2xl">${owner}</h3>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">${ownerTasks.filter(t => t.status === 'DONE').length}/${ownerTasks.length} COMPLETED</span>
                     </div>
-                    <div class="p-4 space-y-3 min-h-[100px]">
-                        ${filteredTasks.length ? '' : '<p class="text-slate-400 text-sm italic py-4 text-center">Không có công việc nào...</p>'}
-                        ${filteredTasks.map(task => `
-                            <div class="group flex items-start gap-3 p-3 rounded-xl border ${task.status === 'Done' ? 'bg-slate-50 border-slate-100' : 'bg-white border-slate-200'} hover:border-blue-300 transition">
-                                <input type="checkbox" ${task.status === 'Done' ? 'checked' : ''} 
-                                    onclick="toggleTask(${task.id})" 
-                                    class="mt-1 w-5 h-5 rounded accent-blue-600 cursor-pointer">
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <h4 class="font-semibold text-sm ${task.status === 'Done' ? 'line-through text-slate-400' : 'text-slate-800'}">${task.title}</h4>
-                                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${getPriorityClass(task.priority)}">${task.priority}</span>
-                                    </div>
-                                    ${task.desc ? `<p class="text-xs text-slate-500 mt-1">${task.desc}</p>` : ''}
-                                    <div class="flex gap-4 mt-2 no-print opacity-0 group-hover:opacity-100 transition">
-                                        <button onclick="editTask(${task.id})" class="text-[10px] font-bold text-blue-600 hover:underline">EDIT</button>
-                                        <button onclick="deleteTask(${task.id})" class="text-[10px] font-bold text-red-600 hover:underline">DELETE</button>
-                                        <button onclick="updateStatus(${task.id}, 'Doing')" class="text-[10px] font-bold text-yellow-600 hover:underline ${task.status === 'Doing' ? 'hidden' : ''}">SET DOING</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
+                    <div class="overflow-x-auto bg-white border border-gray-200">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="50">STT</th>
+                                    <th width="200">Hạng mục công việc</th>
+                                    <th>Chi tiết</th>
+                                    <th width="120">Thời gian</th>
+                                    <th width="80">Priority</th>
+                                    <th width="120">Status</th>
+                                    <th width="150">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filtered.map((t, idx) => `
+                                    <tr>
+                                        <td class="text-gray-400 font-mono">${idx + 1}</td>
+                                        <td class="font-bold">${t.item}</td>
+                                        <td class="text-gray-600 leading-relaxed">${t.detail}</td>
+                                        <td class="font-semibold text-gray-500">${t.time}</td>
+                                        <td class="${t.priority === 'High' ? 'priority-high' : 'text-gray-400'} text-[10px] uppercase font-black">${t.priority}</td>
+                                        <td>
+                                            <select onchange="updateStatus(${t.id}, this.value)" class="w-full text-[10px] p-2 rounded-sm outline-none status-${t.status.toLowerCase()}">
+                                                <option value="TODO" ${t.status === 'TODO' ? 'selected' : ''}>TODO</option>
+                                                <option value="DOING" ${t.status === 'DOING' ? 'selected' : ''}>DOING</option>
+                                                <option value="DONE" ${t.status === 'DONE' ? 'selected' : ''}>DONE</option>
+                                                <option value="BLOCKED" ${t.status === 'BLOCKED' ? 'selected' : ''}>BLOCKED ⚠️</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-[10px] italic text-blue-600">${t.notes}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
                 `;
-                grid.appendChild(card);
+                container.appendChild(tableDiv);
             });
 
-            updateStats();
-            renderCritical();
+            updateDashboard();
         }
 
-        function getPriorityClass(p) {
-            if (p === 'High') return 'bg-red-100 text-red-700';
-            if (p === 'Medium') return 'bg-amber-100 text-amber-700';
-            return 'bg-blue-100 text-blue-700';
-        }
-
-        function updateStats() {
+        function updateDashboard() {
             const total = tasks.length;
-            const done = tasks.filter(t => t.status === 'Done').length;
-            const doing = tasks.filter(t => t.status === 'Doing').length;
-            const todo = tasks.filter(t => t.status === 'Todo').length;
-            const pct = total ? Math.round((done / total) * 100) : 0;
+            const done = tasks.filter(t => t.status === 'DONE').length;
+            const pct = Math.round((done / total) * 100);
+            document.getElementById('overall-pct').innerText = pct + '%';
 
-            document.getElementById('statTotal').innerText = total;
-            document.getElementById('statDone').innerText = done;
-            document.getElementById('statDoing').innerText = doing;
-            document.getElementById('statTodo').innerText = todo;
-            document.getElementById('overallBar').style.width = pct + '%';
-            document.getElementById('overallPct').innerText = pct + '%';
+            const matrix = document.getElementById('status-matrix');
+            matrix.innerHTML = personnel.map(owner => {
+                const pTasks = tasks.filter(t => t.owner === owner);
+                const pPct = Math.round((pTasks.filter(t => t.status === 'DONE').length / pTasks.length) * 100);
+                const isBlocked = pTasks.some(t => t.status === 'BLOCKED');
+                return `
+                    <div class="border-l-2 ${isBlocked ? 'border-red-500 bg-red-50' : 'border-black'} pl-3 py-1">
+                        <div class="text-[10px] font-black uppercase">${owner}</div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono">${pPct}%</span>
+                            <div class="w-16 bg-gray-100 h-1"><div class="bg-black h-1" style="width: ${pPct}%"></div></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function renderCritical() {
-            const criticalList = document.getElementById('criticalList');
-            const highTasks = tasks.filter(t => t.priority === 'High' && t.status !== 'Done').slice(0, 6);
-            criticalList.innerHTML = highTasks.map(t => `
-                <li class="flex items-center gap-2 text-sm text-slate-700 font-medium">
-                    <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    <span class="font-bold">[${t.owner}]</span> ${t.title}
-                </li>
-            `).join('') || '<li class="text-sm text-slate-500 italic">No critical tasks remaining.</li>';
-        }
-
-        // ACTIONS
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            task.status = task.status === 'Done' ? 'Todo' : 'Done';
-            saveData();
-            renderAll();
-        }
-
-        function updateStatus(id, status) {
-            const task = tasks.find(t => t.id === id);
-            task.status = status;
-            saveData();
-            renderAll();
-        }
-
-        function deleteTask(id) {
-            if(confirm('Bạn có chắc muốn xóa task này?')) {
-                tasks = tasks.filter(t => t.id !== id);
-                saveData();
-                renderAll();
+        function showSection(id) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-' + id).classList.add('active');
+            if (id === 'dashboard') {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else {
+                document.getElementById('view-' + id).scrollIntoView({behavior: 'smooth', block: 'start'});
             }
         }
 
         function resetData() {
-            if(confirm('CẢNH BÁO: Hành động này sẽ reset toàn bộ tiến độ ngày hôm nay về mặc định. Bạn chắc chắn chứ?')) {
-                tasks = JSON.parse(JSON.stringify(defaultTasks));
+            if(confirm('Reset toàn bộ tiến độ ngày quay?')) {
+                tasks = tasks.map(t => ({...t, status: 'TODO'}));
                 saveData();
                 renderAll();
             }
         }
 
-        // MODAL LOGIC
-        const modal = document.getElementById('taskModal');
-        function openAddTaskModal() {
-            document.getElementById('modalTitle').innerText = 'Add New Task';
-            document.getElementById('taskForm').reset();
-            document.getElementById('taskId').value = '';
-            modal.classList.replace('hidden', 'flex');
-        }
-
-        function editTask(id) {
-            const task = tasks.find(t => t.id === id);
-            document.getElementById('modalTitle').innerText = 'Edit Task';
-            document.getElementById('taskId').value = task.id;
-            document.getElementById('taskTitle').value = task.title;
-            document.getElementById('taskOwner').value = task.owner;
-            document.getElementById('taskPriority').value = task.priority;
-            document.getElementById('taskDesc').value = task.desc || '';
-            modal.classList.replace('hidden', 'flex');
-        }
-
-        function closeTaskModal() {
-            modal.classList.replace('flex', 'hidden');
-        }
-
-        document.getElementById('taskForm').onsubmit = function(e) {
-            e.preventDefault();
-            const id = document.getElementById('taskId').value;
-            const taskData = {
-                id: id ? parseInt(id) : Date.now(),
-                title: document.getElementById('taskTitle').value,
-                owner: document.getElementById('taskOwner').value,
-                priority: document.getElementById('taskPriority').value,
-                desc: document.getElementById('taskDesc').value,
-                status: id ? tasks.find(t => t.id == id).status : 'Todo'
-            };
-
-            if(id) {
-                const idx = tasks.findIndex(t => t.id == id);
-                tasks[idx] = taskData;
-            } else {
-                tasks.push(taskData);
-            }
-
-            saveData();
-            renderAll();
-            closeTaskModal();
-        };
-
-        // EXPORT
-        function exportJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "production_checklist_070926.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        // Initialize on load
         init();
     </script>
 </body>
