@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DAT BIKE · QUANTUM S · PRODUCTION CONTROL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
 :root{--paper:#f4f1e9;--white:#fffdf8;--ink:#181715;--muted:#777168;--line:#ddd7cc;--orange:#ef4b17;--dark:#171513;--red:#c83f2c;--green:#4d8a64;--yellow:#ad7617}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Montserrat,Arial,sans-serif}
 body:before{content:"";position:fixed;left:0;right:0;top:0;height:4px;background:var(--orange);z-index:100}
 .sidebar{position:fixed;inset:0 auto 0 0;width:310px;padding:45px 28px;background:#f0ede5;border-right:1px solid var(--line);z-index:20}
 .brand{font:800 21px "Barlow Condensed";letter-spacing:1.4px;margin-bottom:42px}.brand em{font-style:normal;color:var(--orange)}
@@ -28,8 +28,8 @@ body:before{content:"";position:fixed;left:0;right:0;top:0;height:4px;background
 table{width:100%;border-collapse:collapse}.task th{background:#eeeae2;color:#817a70;font:700 10px "Barlow Condensed";letter-spacing:1.3px;text-align:left;padding:9px 12px}.task td{border-top:1px solid #ece7df;padding:11px 12px;vertical-align:top;font-size:11px}.task tr:hover{background:#fff9ef}.task .no{font:700 12px "Barlow Condensed";color:var(--orange);width:40px}.task .title{font-weight:700;font-size:12px;line-height:1.35}.task .desc{color:var(--muted);margin-top:3px;line-height:1.4}.tag{display:inline-block;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:800;letter-spacing:.5px}.high{background:#fbe4dd;color:#a83824}.medium{background:#f8edd3;color:#93610e}.low{background:#e4f0e8;color:#3c704f}.status{font-size:10px!important;padding:6px 7px!important;border:1px solid #d7d0c6!important;border-radius:7px!important;background:#fff!important;color:#302e2a!important}
 .calltable{font-size:11px}.calltable th{background:#f0ece4;padding:10px;text-align:left;font:700 10px "Barlow Condensed";letter-spacing:1.2px}.calltable td{border-bottom:1px solid #e6e0d6;padding:9px 10px;vertical-align:top}.calltable tr:hover{background:#fff8ed}.calltable .move{background:#fff0df;font-weight:700}.calltable .break{background:#f2eee7;font-weight:700}.calltable .shot{font:800 13px "Barlow Condensed";color:var(--orange)}
 .callsplit{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.callbox{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:17px}.callbox h3{font:800 22px "Barlow Condensed";margin:0 0 10px}.callrow{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #ece7df;font-size:11px}.callrow:last-child{border:0}.callrow b{font:800 15px "Barlow Condensed";color:var(--orange)}
-.notes{width:100%;min-height:170px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;padding:12px;font:12px Inter;resize:vertical}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid #ccc5ba;background:#fffdf8;padding:9px 12px;border-radius:7px;font:700 11px Inter;cursor:pointer}.btn.dark{background:var(--dark);color:#fff}.btn.orange{background:var(--orange);color:#fff;border-color:var(--orange)}
+.notes{width:100%;min-height:170px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;padding:12px;font:12px Montserrat;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid #ccc5ba;background:#fffdf8;padding:9px 12px;border-radius:7px;font:700 11px Montserrat;cursor:pointer}.btn.dark{background:var(--dark);color:#fff}.btn.orange{background:var(--orange);color:#fff;border-color:var(--orange)}
 .footer{border-top:1px solid var(--line);padding:22px 0;color:#8b847b;font-size:10px;display:flex;justify-content:space-between}
 .mobile{display:none}
 @media(max-width:1050px){.sidebar{width:230px}.main{margin-left:230px}.content,.hero{padding-left:30px;padding-right:30px}.info{grid-template-columns:repeat(3,1fr)}}
@@ -39,11 +39,74 @@ table{width:100%;border-collapse:collapse}.task th{background:#eeeae2;color:#817
 .nav a.active{background:var(--dark);color:#fff}
 .nav a.active .n{color:var(--orange)}
 .mobile a.active{color:var(--orange2);text-decoration:underline;text-underline-offset:4px}
-.backtop{position:fixed;right:24px;bottom:24px;z-index:40;border:1px solid #bdb5aa;background:rgba(255,253,248,.96);color:var(--ink);border-radius:99px;padding:10px 13px;font:700 10px Inter;letter-spacing:.5px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,.08);opacity:0;pointer-events:none;transition:.2s}
+.backtop{position:fixed;right:24px;bottom:24px;z-index:40;border:1px solid #bdb5aa;background:rgba(255,253,248,.96);color:var(--ink);border-radius:99px;padding:10px 13px;font:700 10px Montserrat;letter-spacing:.5px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,.08);opacity:0;pointer-events:none;transition:.2s}
 .backtop.show{opacity:1;pointer-events:auto}
 @media print{.backtop{display:none!important}}
 
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.toolbar input,.toolbar select{height:36px;border:1px solid #cec7bc;border-radius:7px;background:#fffdf8;padding:0 11px;font:500 11px Inter;color:#302e2a}.toolbar input{min-width:260px;flex:1}.row-actions{display:flex;gap:5px}.mini{border:1px solid #d3ccc1;background:#fffdf8;border-radius:6px;padding:5px 7px;font:700 9px Inter;cursor:pointer}.mini.delete{color:#a83b2a}.hidden-row{display:none!important}
+
+/* MOBILE-FIRST SHOOTING MODE */
+.mobile-only{display:none}
+.mobile-toolbar{display:none}
+@media(max-width:760px){
+  body{font-size:14px}
+  .main{width:100%}
+  .hero{padding:32px 16px 22px}
+  .hero h1{font-size:50px;line-height:.9;margin:16px 0}
+  .hero p{font-size:13px;line-height:1.5}
+  .info{grid-template-columns:1fr 1fr;margin-top:20px}
+  .info div{padding:11px 12px}
+  .info b{font-size:14px}
+  .content{padding:14px 12px 50px}
+  .section{margin:28px 0;scroll-margin-top:58px}
+  .sectionhead{position:relative;padding-bottom:9px;margin-bottom:11px}
+  .sectionhead h2{font-size:25px}
+  .code{font-size:8px}
+  .mobile-toolbar{display:flex;position:sticky;top:4px;z-index:50;background:rgba(23,21,19,.98);padding:8px;gap:7px;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+  .mobile-toolbar select{flex:1;min-width:0;background:#292622;color:#fff;border:1px solid #4a443e;border-radius:7px;padding:9px;font-size:11px}
+  .mobile-toolbar button{background:var(--orange);border:0;color:#fff;border-radius:7px;padding:9px 11px;font-weight:800;font-size:11px}
+  .grid2,.callsplit{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr 1fr}
+  .panel{padding:13px}
+  .stat{padding:11px}
+  .stat b{font-size:26px}
+  .person{border-radius:8px}
+  .personhead{padding:12px 13px;position:sticky;top:50px;z-index:8}
+  .personname{font-size:23px}
+  .personhead select{padding:8px 9px;font-size:10px}
+  .task{display:block}
+  .task thead{display:none}
+  .task tbody,.task tr{display:block}
+  .task tr{padding:12px 12px 13px;border-top:1px solid #e6e0d6}
+  .task td{display:block;border:0;padding:2px 0}
+  .task td.no{float:left;width:28px;margin-right:7px;padding-top:1px}
+  .task td:nth-child(2){margin-left:35px;min-height:38px}
+  .task td:nth-child(3),.task td:nth-child(4),.task td:nth-child(5),.task td:nth-child(6){margin-left:35px;margin-top:7px}
+  .task td:nth-child(3):before{content:"TIME  ";font:700 9px "Barlow Condensed";letter-spacing:1px;color:#918a80}
+  .task td:nth-child(5):before{content:"STATUS  ";font:700 9px "Barlow Condensed";letter-spacing:1px;color:#918a80}
+  .task td:nth-child(6):before{content:"NOTE  ";font:700 9px "Barlow Condensed";letter-spacing:1px;color:#918a80}
+  .task .status{width:100%;max-width:none;padding:9px!important;font-size:12px!important}
+  .note{display:block;min-height:24px;padding:5px 0;outline:0}
+  .calltable{display:block}
+  .calltable thead{display:none}
+  .calltable tbody,.calltable tr,.calltable td{display:block}
+  .calltable tr{padding:10px 11px;border-bottom:1px solid #e6e0d6}
+  .calltable td{border:0;padding:2px 0;font-size:11px}
+  .calltable td:nth-child(1):before{content:"START  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(2):before{content:"STOP  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(3):before{content:"DURATION  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(4):before{content:"SHOT  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(5):before{content:"LOCATION  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(6):before{content:"CAMERA  ";font-weight:800;color:var(--orange)}
+  .calltable td:nth-child(7):before{content:"NOTE  ";font-weight:800;color:var(--orange)}
+  .calltable .shot{font-size:15px}
+  .callsplit .callbox{padding:13px}
+  .actions{display:grid;grid-template-columns:1fr 1fr}
+  .btn{padding:11px 9px}
+  .backtop{right:12px;bottom:14px}
+}
+
 </style>
 </head>
 <body>
@@ -76,6 +139,22 @@ table{width:100%;border-collapse:collapse}.task th{background:#eeeae2;color:#817
 <a href="#companymove" data-target="companymove">08 MOVE</a>
 <a href="#notes" data-target="notes">09 NOTES</a>
 </div>
+<div class="mobile-toolbar">
+  <select id="mobileJump" aria-label="Đi tới mục">
+    <option value="">☰ Mục lục</option>
+    <option value="overview">00 · Tổng quan</option>
+    <option value="callsheet">01 · Call Sheet</option>
+    <option value="bichchau">02 · Bích Châu</option>
+    <option value="thugiang">03 · Thu Giang</option>
+    <option value="vananh">04 · Vân Anh</option>
+    <option value="nguyen">05 · Nguyên</option>
+    <option value="thuyem">06 · Thùy Em</option>
+    <option value="hanngo">07 · Hân Ngô</option>
+    <option value="companymove">08 · Company Move</option>
+    <option value="notes">09 · Live Notes</option>
+  </select>
+  <button type="button" id="mobileTop">↑ TOP</button>
+</div>
 
 <button id="backTop" class="backtop" type="button">↑ TOP</button>
 <div class="main">
@@ -96,7 +175,7 @@ table{width:100%;border-collapse:collapse}.task th{background:#eeeae2;color:#817
 <section id="overview" class="section">
 <div class="sectionhead"><h2>00 · Tổng quan</h2><span class="code">PRODUCTION CONTROL</span></div>
 <div class="toolbar"><input id="searchBox" type="search" placeholder="Tìm task, nhân sự, location, ghi chú..."><select id="filterStatus"><option value="ALL">ALL STATUS</option><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select><select id="filterPriority"><option value="ALL">ALL PRIORITY</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option></select><button class="btn" type="button" onclick="clearFilters()">CLEAR FILTER</button></div>
-<div class="warning"><strong>QUAN TRỌNG:</strong> Call Sheet PDF bạn gửi ghi <strong>06.09.26 · DAY 1 OF 2</strong>, trong khi bảng phân công ban đầu đang dùng <strong>06/09/2026</strong>. Mình giữ nguyên ngày của source và tách riêng hai thông tin để không tự sửa sai tài liệu. Hãy xác nhận ngày trước khi dùng live.</div>
+
 <div class="grid2">
 <div class="panel"><div class="grid3"><div class="stat"><small>TOTAL TASKS</small><b id="total">0</b></div><div class="stat"><small>DONE</small><b id="done">0</b></div><div class="stat"><small>DOING</small><b id="doing">0</b></div></div><div class="progress"><i id="prog"></i></div><div style="font-size:10px;color:#7d766d;margin-top:7px">Completion <b id="pct">0%</b></div></div>
 <div class="panel"><div class="critical"><div><b>05:30</b> · Shooting starts</div><div><b>08:10–09:25</b> · Move to sau cầu Phú Mỹ</div><div><b>13:10–14:55</b> · Company move to Stylist Studio</div><div><b>17:40–19:10</b> · CGI / Garage / Final shots</div></div></div>
@@ -376,6 +455,20 @@ window.addEventListener("scroll",()=>{
 backTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 
 setActiveNav(location.hash && document.getElementById(location.hash.slice(1)) ? location.hash.slice(1) : "overview");
+
+const mobileJump=document.getElementById("mobileJump");
+if(mobileJump){
+  mobileJump.addEventListener("change",function(){
+    if(!this.value)return;
+    const el=document.getElementById(this.value);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"start"});history.replaceState(null,"","#"+this.value);}
+    setActiveNav(this.value);
+    this.value="";
+  });
+}
+const mobileTop=document.getElementById("mobileTop");
+if(mobileTop) mobileTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
 loadState();update();updatePersonHeaders();applyFilters();
 </script>
 </body>
