@@ -1,319 +1,382 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATBIKE TVC | SHOOTING DASHBOARD 06.09.26</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --brand-orange: #ff4d00; --brand-dark: #0a0a0a; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; color: var(--brand-dark); }
-        .oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
-        
-        /* Sidebar */
-        .sidebar { width: 280px; height: 100vh; position: fixed; left: 0; top: 0; background: white; border-right: 1px solid #e5e5e5; z-index: 100; overflow-y: auto; }
-        .nav-item { padding: 14px 24px; display: flex; align-items: center; gap: 12px; color: #666; cursor: pointer; border-bottom: 1px solid #f8f8f8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-item:hover { background: #fff5f2; color: var(--brand-orange); }
-        .nav-item.active { background: var(--brand-dark); color: white; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DAT BIKE · QUANTUM S · PRODUCTION CONTROL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+:root{--paper:#f4f1e9;--white:#fffdf8;--ink:#181715;--muted:#777168;--line:#ddd7cc;--orange:#ef4b17;--dark:#171513;--red:#c83f2c;--green:#4d8a64;--yellow:#ad7617}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Arial,sans-serif}
+body:before{content:"";position:fixed;left:0;right:0;top:0;height:4px;background:var(--orange);z-index:100}
+.sidebar{position:fixed;inset:0 auto 0 0;width:310px;padding:45px 28px;background:#f0ede5;border-right:1px solid var(--line);z-index:20}
+.brand{font:800 21px "Barlow Condensed";letter-spacing:1.4px;margin-bottom:42px}.brand em{font-style:normal;color:var(--orange)}
+.label{font:700 11px "Barlow Condensed";letter-spacing:3px;color:#888178;margin:0 0 12px 6px}
+.nav a{display:flex;gap:12px;align-items:center;padding:11px 9px;margin:2px 0;text-decoration:none;color:#302e2b;font-size:13px;font-weight:650;border-radius:7px}.nav a:hover,.nav a.active{background:var(--dark);color:#fff}.nav .n{font:700 12px "Barlow Condensed";color:var(--orange);min-width:25px}
+.sidefoot{position:absolute;left:28px;right:28px;bottom:25px;border-top:1px solid var(--line);padding-top:14px;color:#8b857c;font-size:10px;line-height:1.6}
+.main{margin-left:310px}.hero{background:linear-gradient(135deg,#181513,#3a1c14 58%,#171513);color:#fff;padding:55px 55px 40px;border-bottom:6px solid var(--orange)}
+.kicker{font:700 12px "Barlow Condensed";letter-spacing:3px;color:#ff6b2d}.hero h1{font:800 74px/.88 "Barlow Condensed";margin:23px 0 18px}.hero h1 span{display:block;color:#f35a22}.hero p{max-width:900px;color:#ddd5cd;font-size:15px;line-height:1.55;margin:0}
+.info{display:grid;grid-template-columns:repeat(5,1fr);margin-top:32px;border:1px solid #4b332a;border-radius:10px;overflow:hidden}.info div{padding:15px 18px;border-right:1px solid #4b332a}.info div:last-child{border:0}.info small{display:block;color:#8f827a;font:600 10px "Barlow Condensed";letter-spacing:2px;margin-bottom:8px}.info b{font:600 16px "Barlow Condensed"}.orange{color:#ff6a2b}
+.content{max-width:1600px;padding:28px 55px 60px}.section{scroll-margin-top:25px;margin:40px 0}.sectionhead{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:11px;margin-bottom:15px}.sectionhead h2{font:800 30px "Barlow Condensed";margin:0}.code{font:700 10px "Barlow Condensed";letter-spacing:2px;color:var(--orange)}
+.warning{background:#fff4e8;border:1px solid #e7c7a7;border-left:5px solid var(--orange);padding:15px 18px;border-radius:8px;font-size:12px;line-height:1.55;margin-bottom:18px}.warning strong{color:#bf3f16}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:#faf7f0;border:1px solid var(--line);border-radius:8px;padding:14px}.stat small{font:700 9px "Barlow Condensed";letter-spacing:1.5px;color:#898177}.stat b{display:block;font:800 29px "Barlow Condensed";margin-top:3px}
+.progress{height:7px;background:#e6e1d8;border-radius:99px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:var(--orange);width:0}
+.critical{display:flex;flex-direction:column;gap:7px}.critical div{background:#faf7f0;border-left:3px solid var(--orange);padding:9px 11px;font-size:11px;line-height:1.45}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.timecard{border:1px solid var(--line);border-radius:8px;background:var(--white);padding:12px}.timecard b{font:800 18px "Barlow Condensed";color:var(--orange)}.timecard strong{display:block;font:700 13px "Barlow Condensed";margin-top:2px}.timecard small{color:var(--muted);font-size:10px;line-height:1.4}
+.person{background:var(--white);border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:18px}.personhead{background:var(--dark);color:white;padding:15px 18px;display:flex;justify-content:space-between;align-items:center}.personname{font:800 27px "Barlow Condensed"}.personsub{font-size:10px;color:#aaa39b;margin-top:2px}.personhead select{background:#292622;color:#fff;border:1px solid #4a443e;border-radius:99px;padding:7px 9px;font-weight:700;font-size:10px}
+table{width:100%;border-collapse:collapse}.task th{background:#eeeae2;color:#817a70;font:700 10px "Barlow Condensed";letter-spacing:1.3px;text-align:left;padding:9px 12px}.task td{border-top:1px solid #ece7df;padding:11px 12px;vertical-align:top;font-size:11px}.task tr:hover{background:#fff9ef}.task .no{font:700 12px "Barlow Condensed";color:var(--orange);width:40px}.task .title{font-weight:700;font-size:12px;line-height:1.35}.task .desc{color:var(--muted);margin-top:3px;line-height:1.4}.tag{display:inline-block;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:800;letter-spacing:.5px}.high{background:#fbe4dd;color:#a83824}.medium{background:#f8edd3;color:#93610e}.low{background:#e4f0e8;color:#3c704f}.status{font-size:10px!important;padding:6px 7px!important;border:1px solid #d7d0c6!important;border-radius:7px!important;background:#fff!important;color:#302e2a!important}
+.calltable{font-size:11px}.calltable th{background:#f0ece4;padding:10px;text-align:left;font:700 10px "Barlow Condensed";letter-spacing:1.2px}.calltable td{border-bottom:1px solid #e6e0d6;padding:9px 10px;vertical-align:top}.calltable tr:hover{background:#fff8ed}.calltable .move{background:#fff0df;font-weight:700}.calltable .break{background:#f2eee7;font-weight:700}.calltable .shot{font:800 13px "Barlow Condensed";color:var(--orange)}
+.callsplit{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.callbox{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:17px}.callbox h3{font:800 22px "Barlow Condensed";margin:0 0 10px}.callrow{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #ece7df;font-size:11px}.callrow:last-child{border:0}.callrow b{font:800 15px "Barlow Condensed";color:var(--orange)}
+.notes{width:100%;min-height:170px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;padding:12px;font:12px Inter;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid #ccc5ba;background:#fffdf8;padding:9px 12px;border-radius:7px;font:700 11px Inter;cursor:pointer}.btn.dark{background:var(--dark);color:#fff}.btn.orange{background:var(--orange);color:#fff;border-color:var(--orange)}
+.footer{border-top:1px solid var(--line);padding:22px 0;color:#8b847b;font-size:10px;display:flex;justify-content:space-between}
+.mobile{display:none}
+@media(max-width:1050px){.sidebar{width:230px}.main{margin-left:230px}.content,.hero{padding-left:30px;padding-right:30px}.info{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.sidebar{display:none}.main{margin-left:0}.mobile{display:block;position:sticky;top:4px;z-index:15;background:var(--dark);padding:9px;overflow:auto;white-space:nowrap}.mobile a{color:#fff;text-decoration:none;font-size:10px;font-weight:700;margin-right:13px}.hero{padding:38px 18px 25px}.hero h1{font-size:53px}.info{grid-template-columns:1fr 1fr}.content{padding:20px 14px}.grid2,.callsplit{grid-template-columns:1fr}.grid3,.timeline{grid-template-columns:1fr 1fr}.task{font-size:10px}.task th:nth-child(3),.task td:nth-child(3){display:none}}
+@media print{.sidebar,.mobile,.actions{display:none!important}.main{margin:0}.hero{padding:25px}.content{padding:20px}.person{break-inside:avoid}.section{margin:20px 0}}
 
-        /* Tables */
-        .main-content { margin-left: 280px; padding: 0 0 100px 0; }
-        .status-todo { background: #f3f4f6; color: #6b7280; }
-        .status-doing { background: #fef3c7; color: #d97706; font-weight: bold; }
-        .status-done { background: #dcfce7; color: #166534; font-weight: bold; }
-        .status-blocked { background: #fee2e2; color: #b91c1c; font-weight: bold; animation: pulse 2s infinite; }
-        
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-        
-        .priority-high { color: var(--brand-orange); font-weight: 900; }
-        
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: #fdfdfd; text-align: left; padding: 12px; border-bottom: 2px solid #eee; text-transform: uppercase; color: #888; font-size: 10px; }
-        td { padding: 12px; border-bottom: 1px solid #eee; vertical-align: top; }
-        tr:hover { background-color: #fafafa; }
+.nav a.active{background:var(--dark);color:#fff}
+.nav a.active .n{color:var(--orange)}
+.mobile a.active{color:var(--orange2);text-decoration:underline;text-underline-offset:4px}
+.backtop{position:fixed;right:24px;bottom:24px;z-index:40;border:1px solid #bdb5aa;background:rgba(255,253,248,.96);color:var(--ink);border-radius:99px;padding:10px 13px;font:700 10px Inter;letter-spacing:.5px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,.08);opacity:0;pointer-events:none;transition:.2s}
+.backtop.show{opacity:1;pointer-events:auto}
+@media print{.backtop{display:none!important}}
 
-        .sticky-header { position: sticky; top: 0; background: white; z-index: 50; border-bottom: 1px solid #ddd; }
-    </style>
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.toolbar input,.toolbar select{height:36px;border:1px solid #cec7bc;border-radius:7px;background:#fffdf8;padding:0 11px;font:500 11px Inter;color:#302e2a}.toolbar input{min-width:260px;flex:1}.row-actions{display:flex;gap:5px}.mini{border:1px solid #d3ccc1;background:#fffdf8;border-radius:6px;padding:5px 7px;font:700 9px Inter;cursor:pointer}.mini.delete{color:#a83b2a}.hidden-row{display:none!important}
+</style>
 </head>
 <body>
+<aside class="sidebar">
+<div class="brand">DAT BIKE <em>·</em> QUANTUM S</div>
+<div class="label">MỤC LỤC</div>
+<nav id="mainNav" class="nav">
+<a href="#overview" data-target="overview"><span class="n">00</span>Tổng quan</a>
+<a href="#callsheet" data-target="callsheet"><span class="n">01</span>Call Sheet</a>
+<a href="#bichchau" data-target="bichchau"><span class="n">02</span>Bích Châu</a>
+<a href="#thugiang" data-target="thugiang"><span class="n">03</span>Thu Giang</a>
+<a href="#vananh" data-target="vananh"><span class="n">04</span>Vân Anh</a>
+<a href="#nguyen" data-target="nguyen"><span class="n">05</span>Nguyên</a>
+<a href="#thuyem" data-target="thuyem"><span class="n">06</span>Thùy Em</a>
+<a href="#hanngo" data-target="hanngo"><span class="n">07</span>Hân Ngô</a>
+<a href="#companymove" data-target="companymove"><span class="n">08</span>Company Move & Safety</a>
+<a href="#notes" data-target="notes"><span class="n">09</span>Live Notes</a>
+</nav>
+<div class="sidefoot">INTERNAL WORKING DOC<br><b>QUANTUM S · PRODUCTION CONTROL</b><br><span id="saved">Not saved yet</span></div>
+</aside>
+<div id="mobileNav" class="mobile">
+<a href="#overview" data-target="overview">00 OVERVIEW</a>
+<a href="#callsheet" data-target="callsheet">01 CALL SHEET</a>
+<a href="#bichchau" data-target="bichchau">02 CHÂU</a>
+<a href="#thugiang" data-target="thugiang">03 GIANG</a>
+<a href="#vananh" data-target="vananh">04 VÂN ANH</a>
+<a href="#nguyen" data-target="nguyen">05 NGUYÊN</a>
+<a href="#thuyem" data-target="thuyem">06 THÙY EM</a>
+<a href="#hanngo" data-target="hanngo">07 HÂN</a>
+<a href="#companymove" data-target="companymove">08 MOVE</a>
+<a href="#notes" data-target="notes">09 NOTES</a>
+</div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar no-print">
-        <div class="p-8 border-b border-gray-100 bg-black text-white">
-            <div class="text-[10px] text-orange-500 font-black tracking-[4px] uppercase mb-1">Datbike TVC</div>
-            <div class="oswald text-2xl">Quantum S</div>
-            <div class="text-[10px] text-gray-500 mt-2">Shooting Day 1: 06.09.26</div>
-        </div>
-        <nav class="mt-4">
-            <div onclick="showSection('dashboard')" class="nav-item active" id="nav-dashboard"><i class="fas fa-th-large w-4"></i> Dashboard Tổng quan</div>
-            <div onclick="showSection('Bích Châu')" class="nav-item" id="nav-Bích Châu"><i class="fas fa-user w-4"></i> Bích Châu (Logistics)</div>
-            <div onclick="showSection('Thu Giang')" class="nav-item" id="nav-Thu Giang"><i class="fas fa-paint-brush w-4"></i> Thu Giang (Art/Set)</div>
-            <div onclick="showSection('Vân Anh')" class="nav-item" id="nav-Vân Anh"><i class="fas fa-tshirt w-4"></i> Vân Anh (Stylist)</div>
-            <div onclick="showSection('Nguyên')" class="nav-item" id="nav-Nguyên"><i class="fas fa-camera w-4"></i> Nguyên (Equipment)</div>
-            <div onclick="showSection('Thùy Em')" class="nav-item" id="nav-Thùy Em"><i class="fas fa-briefcase w-4"></i> Thùy Em (Account)</div>
-            <div onclick="showSection('Hân Ngô')" class="nav-item" id="nav-Hân Ngô"><i class="fas fa-tasks w-4"></i> Hân Ngô (Producer)</div>
-        </nav>
-    </aside>
+<button id="backTop" class="backtop" type="button">↑ TOP</button>
+<div class="main">
+<header class="hero">
+<div class="kicker">Production Breakdown · Internal Working Doc</div>
+<h1>DAT BIKE <span>QUANTUM S</span></h1>
+<p>Production Control Board · Nhân sự / Call Sheet / Shooting Schedule / Company Move / Safety. Giao diện điều phối nội bộ, không phải bản thay thế call sheet gốc.</p>
+<div class="info">
+<div><small>TEAM BOARD</small><b class="orange">06/09/2026</b></div>
+<div><small>CALL SHEET SOURCE</small><b>06/09/26 · DAY 1/2</b></div>
+<div><small>CREW CALL</small><b>04:00 → 06:00</b></div>
+<div><small>SHOOTING</small><b>05:30 → 19:10</b></div>
+<div><small>PRIMARY</small><b>CẦU BA SON</b></div>
+</div>
+</header>
 
-    <main class="main-content">
-        <!-- HEADER SECTION -->
-        <header class="bg-[#0a0a0a] text-white p-10 pt-16">
-            <div class="flex justify-between items-end">
-                <div>
-                    <h1 class="oswald text-7xl font-black leading-none italic">PRODUCTION<br><span class="text-orange-500">CONTROL HUB</span></h1>
-                </div>
-                <div class="text-right no-print">
-                    <button onclick="window.print()" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 text-xs font-bold uppercase rounded-sm transition">
-                        Export Callsheet Report
-                    </button>
-                </div>
-            </div>
+<main class="content">
+<section id="overview" class="section">
+<div class="sectionhead"><h2>00 · Tổng quan</h2><span class="code">PRODUCTION CONTROL</span></div>
+<div class="toolbar"><input id="searchBox" type="search" placeholder="Tìm task, nhân sự, location, ghi chú..."><select id="filterStatus"><option value="ALL">ALL STATUS</option><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select><select id="filterPriority"><option value="ALL">ALL PRIORITY</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option></select><button class="btn" type="button" onclick="clearFilters()">CLEAR FILTER</button></div>
+<div class="warning"><strong>QUAN TRỌNG:</strong> Call Sheet PDF bạn gửi ghi <strong>06.09.26 · DAY 1 OF 2</strong>, trong khi bảng phân công ban đầu đang dùng <strong>06/09/2026</strong>. Mình giữ nguyên ngày của source và tách riêng hai thông tin để không tự sửa sai tài liệu. Hãy xác nhận ngày trước khi dùng live.</div>
+<div class="grid2">
+<div class="panel"><div class="grid3"><div class="stat"><small>TOTAL TASKS</small><b id="total">0</b></div><div class="stat"><small>DONE</small><b id="done">0</b></div><div class="stat"><small>DOING</small><b id="doing">0</b></div></div><div class="progress"><i id="prog"></i></div><div style="font-size:10px;color:#7d766d;margin-top:7px">Completion <b id="pct">0%</b></div></div>
+<div class="panel"><div class="critical"><div><b>05:30</b> · Shooting starts</div><div><b>08:10–09:25</b> · Move to sau cầu Phú Mỹ</div><div><b>13:10–14:55</b> · Company move to Stylist Studio</div><div><b>17:40–19:10</b> · CGI / Garage / Final shots</div></div></div>
+</div>
+</section>
 
-            <!-- KEY INFO GRID -->
-            <div class="grid grid-cols-4 gap-1 mt-12 border border-white/10">
-                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Director Call</div><div class="font-bold">05:00 SA</div></div>
-                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Shooting Start</div><div class="font-bold text-orange-500">05:30 SA</div></div>
-                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Location 1</div><div class="font-bold">Cầu Ba Son</div></div>
-                <div class="bg-white/5 p-4"><div class="text-[9px] uppercase text-gray-500">Sunrise / Sunset</div><div class="font-bold">05:50 / 18:00</div></div>
-            </div>
-        </header>
+<section id="callsheet" class="section">
+<div class="sectionhead"><h2>01 · Call Sheet</h2><span class="code">SOURCE-FAITHFUL SCHEDULE</span></div>
+<div class="callsplit">
+<div class="callbox"><h3>Crew Call</h3>
+<div class="callrow"><b>04:00</b><span>RAPTOR TEAM</span></div>
+<div class="callrow"><b>04:30</b><span>Lighting · Camera</span></div>
+<div class="callrow"><b>04:45</b><span>D.O.P · Catering</span></div>
+<div class="callrow"><b>05:00</b><span>Director · Team AD · Art/Thiết kế · Production/BTS · Wardrobe/Makeup · Focus Puller</span></div>
+<div class="callrow"><b>06:00</b><span>D.I.T</span></div>
+</div>
+<div class="callbox"><h3>Call / Location</h3>
+<div class="callrow"><b>05:00</b><span>Client Calltime</span></div>
+<div class="callrow"><b>05:00</b><span>Nhân vật chính Calltime</span></div>
+<div class="callrow"><b>05:30</b><span>Shooting starts</span></div>
+<div class="callrow"><b>06:00</b><span>Nhân vật chính · Shooting time</span></div>
+<div class="callrow"><b>—</b><span>Cầu Ba Son · Phía sau cầu Phú Mỹ · Phim trường Stylist Media</span></div>
+<div class="callrow"><b>☀</b><span>Sunrise 05:50 · Sunset 18:00</span></div>
+</div>
+</div>
+<div class="panel">
+<h3 style="font:800 24px 'Barlow Condensed';margin:0 0 12px">Master Shooting Schedule</h3>
+<div style="overflow:auto">
+<table class="calltable">
+<thead><tr><th>START</th><th>STOP</th><th>DURATION</th><th>SCENE / SHOT</th><th>LOCATION</th><th>CAMERA / MOVE</th><th>DESCRIPTION / NOTE</th></tr></thead>
+<tbody>
+<tr class="move"><td>04:00</td><td>05:30</td><td>01:30</td><td>SETUP</td><td>—</td><td>—</td><td>Ăn sáng · Setup</td></tr>
+<tr><td>05:30</td><td>06:30</td><td>01:00</td><td class="shot">10</td><td>CẦU BA SON</td><td>WS · Behind · Zolly · Tracking Car</td><td>Camera đi theo nhân vật đang phóng xe trên cầu Ba Son. Nhân vật chính · Xe Quantum S · Mũ bảo hiểm · xe tiến / camera zoom out.</td></tr>
+<tr><td>05:30</td><td>06:30</td><td>01:00</td><td class="shot">13</td><td>CẦU BA SON</td><td>WS · Frontal Tracking Car</td><td>Chuyển cảnh, chiếc xe tiếp tục lao lên phía trước. Nhân vật chính · Xe Quantum S · Mũ bảo hiểm.</td></tr>
+<tr class="move"><td>06:30</td><td>06:45</td><td>00:15</td><td>SETUP</td><td>CẦU BA SON</td><td>—</td><td>THAY ĐỔI SET UP CAMERA</td></tr>
+<tr><td>06:45</td><td>07:30</td><td>00:45</td><td class="shot">15.1</td><td>CẦU BA SON</td><td>FS → WS → Boom Up · Tracking Car</td><td>Camera đi xuống từ phía trên, góc chính diện xe, transition qua thành phố rồi out từ đèn xe.</td></tr>
+<tr><td>06:45</td><td>07:30</td><td>00:45</td><td class="shot">14</td><td>CẦU BA SON</td><td>MCU · Side · Tracking Car</td><td>Máy tracking theo phần thân xe.</td></tr>
+<tr><td>06:45</td><td>07:30</td><td>00:45</td><td class="shot">12.1 / 12.2</td><td>CẦU BA SON</td><td>MCU · Tracking Car</td><td>Máy cận vào những chi tiết của xe.</td></tr>
+<tr class="move"><td>07:30</td><td>07:40</td><td>00:10</td><td>SETUP</td><td>CẦU BA SON</td><td>—</td><td>THAY ĐỔI SET UP SANG FLYCAM</td></tr>
+<tr><td>07:40</td><td>08:10</td><td>00:30</td><td class="shot">11</td><td>CẦU BA SON</td><td>WS · Flycam</td><td>Từ trên cao xuống, thấy chiếc xe đang phóng vút lên phía trước.</td></tr>
+<tr class="move"><td>08:10</td><td>09:25</td><td>01:15</td><td>MOVE</td><td>SAU CẦU PHÚ MỸ</td><td>—</td><td>MOVE TO SAU CẦU PHÚ MỸ · Đường nước + đường hoa + phông xanh ending.</td></tr>
+<tr><td>09:25</td><td>10:40</td><td>01:15</td><td class="shot">26 / 27 / 25 / 25.1</td><td>BÃI ĐẤT SÀI GÒN</td><td>Rig đuôi xe · Slider · Low Angle SloMo</td><td>Chuỗi slow motion: bánh sau / logo / bánh xe qua vũng nước / reflection trên vũng nước.</td></tr>
+<tr class="break"><td>10:40</td><td>11:10</td><td>00:30</td><td>LUNCH</td><td>—</td><td>—</td><td>LUNCH BREAK</td></tr>
+<tr><td>11:10</td><td>11:55</td><td>00:45</td><td class="shot">36</td><td>GREEN SCREEN</td><td>FS · Static Green Screen</td><td>Cảnh toàn: Anh đứng trên đỉnh đồi nhìn xuống cung đường vừa đi qua được xếp thành chiếc cúp DatBike. Platform · Shoot SG.</td></tr>
+<tr><td>11:55</td><td>12:40</td><td>00:45</td><td class="shot">34 / 35</td><td>GREEN SCREEN</td><td>MCU · Static / Follow</td><td>Xe phanh lại / Hero nhân vật đứng nhìn về phía xa. Platform · Shoot SG.</td></tr>
+<tr><td>12:40</td><td>13:10</td><td>00:30</td><td class="shot">21.2</td><td>GREEN SCREEN</td><td>CU → ECU · Push In · Laowa</td><td>Push in vào đặc tả mắt nhân vật. Mũ bảo hiểm; đục lỗ trên mặt (ND dày + mỏng hơn); không cần dựa vào phông xanh.</td></tr>
+<tr class="move"><td>13:10</td><td>14:55</td><td>01:45</td><td>MOVE</td><td>STYLIST STUDIO</td><td>—</td><td>COMPANY MOVE TO STYLIST STUDIO</td></tr>
+<tr><td>14:55</td><td>15:25</td><td>00:30</td><td class="shot">5</td><td>GARAGE</td><td>FS · Pull Out</td><td>Camera dolly out từ xe thấy nhân vật tiến tới chiếc xe của mình.</td></tr>
+<tr><td>15:25</td><td>16:10</td><td>00:45</td><td class="shot">7 / 9</td><td>GARAGE</td><td>CU · Jib Arm / Handheld · Camera Roll</td><td>Đeo găng, chuẩn bị hành trình; sau đó match action khi nhân vật vặn ga, camera follow.</td></tr>
+<tr><td>16:10</td><td>16:55</td><td>00:45</td><td class="shot">8</td><td>GARAGE</td><td>CU · Rig Mũ</td><td>Chàng trai đội mũ bảo hiểm lên, camera xoay theo chuyển động mũ.</td></tr>
+<tr><td>16:55</td><td>17:40</td><td>00:45</td><td class="shot">3</td><td>GARAGE</td><td>MS · Bottom Up · Slider</td><td>Nhân vật chính xuất hiện, góc nhìn từ dưới lên. Khung lưới sắt.</td></tr>
+<tr class="break"><td>17:40</td><td>18:10</td><td>00:30</td><td>DINNER</td><td>—</td><td>—</td><td>ROLLING DINNER</td></tr>
+<tr><td>17:40</td><td>19:10</td><td>01:30</td><td class="shot">1 / 2 / 4.1 / 4.2 / 6</td><td>CGI / GARAGE</td><td>CU · Tilt Up · Boom Swing Out · Pull Out · Gimbal on Jib · Static</td><td>CGI / headlight light-up; pull out toàn bộ phần đầu xe; cận logo với hiệu quả ánh sáng lướt; màn hình xe sáng lên và thông số khởi động.</td></tr>
+<tr class="break"><td>19:10</td><td>19:10</td><td>—</td><td>WRAP</td><td>—</td><td>—</td><td>WRAP! · CẢM ƠN TẤT CẢ ANH EM ^_^</td></tr>
+</tbody></table>
+</div>
+</div>
+<div class="callsplit" style="margin-top:16px">
+<div class="callbox"><h3>Call Sheet Rules</h3><div class="critical"><div><b>NO CELLPHONES</b> — Không sử dụng điện thoại nếu không được phép cho công việc.</div><div><b>WALKIE</b> — Channels #1 · #2 · #3 · #5.</div><div><b>HEALTH & SAFETY</b> — Be safe and healthy · ăn uống đủ bữa, giữ gìn sức khỏe.</div></div></div>
+<div class="callbox"><h3>Talent Note</h3><div class="critical"><div><b>MAKEUP / HAIR</b> — Team nghệ sĩ & diễn viên lưu ý makeup và làm tóc đã hoàn thiện trước giờ on set.</div><div><b>PRIMARY TALENT</b> — Calltime 05:00 AM · Shooting time 06:00 AM.</div></div></div>
+</div>
+</section>
 
-        <!-- DASHBOARD VIEW -->
-        <div id="section-dashboard" class="p-10 section-view">
-            <h2 class="oswald text-3xl mb-8 border-b-4 border-black inline-block">Overview Dashboard</h2>
-            
-            <!-- Overall Progress -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div class="bg-white p-8 border border-gray-200">
-                    <div class="text-xs font-bold text-gray-400 uppercase mb-4">Overall Completion</div>
-                    <div class="flex items-end gap-2">
-                        <span id="overall-pct" class="text-6xl font-black text-black leading-none">0%</span>
-                        <span class="text-orange-500 font-bold mb-1">TOTAL</span>
-                    </div>
-                </div>
-                <div class="md:col-span-2 bg-white p-8 border border-gray-200">
-                    <div class="text-xs font-bold text-gray-400 uppercase mb-4">Personnel Status Matrix</div>
-                    <div id="status-matrix" class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- JS injected -->
-                    </div>
-                </div>
-            </div>
+<section id="bichchau" class="section person-section">
+<div class="sectionhead"><h2>02 · Bích Châu</h2><span class="code">5 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Bích Châu</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Bích Châu" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Phát đàm / intercom cho toàn đoàn</div><div class="desc">Phát đủ, note tên người nhận và tình trạng thiết bị.</div></td><td>06:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Sắp xếp chỗ Client / Agency</div><div class="desc">Basecamp gần khu vực bắt sóng đàm/intercom tốt.</div></td><td>06:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Dán board / storyboard</div><div class="desc">Đảm bảo board đầy đủ và storyboard Canva mới sẵn sàng.</div></td><td>07:00</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Di chuyển về Studio trước đoàn</div><div class="desc">Phối hợp Thùy Em set basecamp mới trước company move.</div></td><td>12:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Set basecamp location mới</div><div class="desc">Chỗ ngồi Client/Agency ổn định, liên lạc tốt.</div></td><td>13:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="thugiang" class="section person-section">
+<div class="sectionhead"><h2>03 · Thu Giang</h2><span class="code">10 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Thu Giang</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Thu Giang" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Ổn định set Cầu Ba Son</div><div class="desc">Check toàn bộ set trước khi move.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Check Vũng nước — hố / bạt / xịt nước</div><div class="desc">Đào hố, trải bạt và test xịt nước OK.</div></td><td>09:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Check hồ / hố 20cm</div><div class="desc">Đảm bảo khu vực đủ điều kiện quay.</div></td><td>09:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Check bục bê tông</div><div class="desc">Kiểm tra tình trạng bục.</div></td><td>09:30</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Check phông xanh backup</div><div class="desc">Đảm bảo phông xanh backup có mặt.</div></td><td>09:30</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">06</td><td><div class="title">Tape marker ready</div><div class="desc">Tape xanh dương / xanh lá / đỏ.</div></td><td>09:30</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">07</td><td><div class="title">Nón + khoan đục cho shot Laowa</div><div class="desc">Ready bụi cây ven đường để tạo hiệu ứng.</div></td><td>10:00</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">08</td><td><div class="title">Check Trần Gara</div><div class="desc">Căn chỉnh thẳng hàng, đồng bộ design với phòng bên trong.</div></td><td>10:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">09</td><td><div class="title">Check nón bảo hiểm rig</div><div class="desc">Đảm bảo rig OK.</div></td><td>10:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">10</td><td><div class="title">Check treo đèn / set studio</div><div class="desc">Về studio là mọi thứ ready set.</div></td><td>11:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="vananh" class="section person-section">
+<div class="sectionhead"><h2>04 · Vân Anh</h2><span class="code">6 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Vân Anh</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Vân Anh" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Mặc đồ Talent &amp; Stunt</div><div class="desc">Talent: bộ đã sửa; Stunt: bộ chưa sửa — check kỹ rack.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Check phụ kiện</div><div class="desc">Đảm bảo đầy đủ phụ kiện cần thiết.</div></td><td>06:15</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Check bao tay</div><div class="desc">Xác nhận đen hay cam.</div></td><td>06:15</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Áo thun bên trong</div><div class="desc">Màu đen; backup xám cho AGC — check sớm.</div></td><td>06:15</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Lều stand by</div><div class="desc">Đảm bảo lều sẵn sàng.</div></td><td>06:30</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">06</td><td><div class="title">Mũ full-face</div><div class="desc">Check decal đã dán.</div></td><td>06:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="nguyen" class="section person-section">
+<div class="sectionhead"><h2>05 · Nguyên</h2><span class="code">8 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Nguyên</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Nguyên" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Xuất xe &amp; đưa xe xuống đầu tiên</div><div class="desc">Ưu tiên Hero Bike xuống đầu tiên.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Lau kỹ Quantum S màu xám</div><div class="desc">Xe xám duy nhất quay chính — phải sạch tuyệt đối.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Kiểm tra pin 100%</div><div class="desc">Đảm bảo pin đầy.</div></td><td>06:15</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Beauty readiness</div><div class="desc">Lau sạch góc cạnh cho Flycam / Jib.</div></td><td>06:15</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Duy trì xe sạch</div><div class="desc">Luôn có người lau/chăm xe trong shooting.</div></td><td>08:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">06</td><td><div class="title">Nhận bàn giao 2 kỹ thuật khách</div><div class="desc">Sau Ba Son: chia 1 về Studio, 1 đi location mới.</div></td><td>12:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">07</td><td><div class="title">Sạc cuốn chiếu Hero Bike</div><div class="desc">Cắm sạc ngay khi tới location mới.</div></td><td>13:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">08</td><td><div class="title">Điều 1 kỹ thuật về Studio sửa xe</div><div class="desc">Đảm bảo xe beauty được fix/rửa.</div></td><td>12:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="thuyem" class="section person-section">
+<div class="sectionhead"><h2>06 · Thùy Em</h2><span class="code">9 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Thùy Em</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Thùy Em" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Check asset trên người Talent</div><div class="desc">Đảm bảo asset OK trước giờ shoot.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Cho khách check trước khi lên set</div><div class="desc">Client / Agency approval trước rolling.</div></td><td>07:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Điều phối kỹ thuật khách</div><div class="desc">Phối hợp Khánh Nguyên chia 1 người Studio / 1 location.</div></td><td>12:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Điều phối set với Client / AGC</div><div class="desc">Bám set, xử lý thay đổi.</div></td><td>07:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Theo dõi tiến độ / push set</div><div class="desc">Bám timeline shooting.</div></td><td>08:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">06</td><td><div class="title">Làm việc với AD</div><div class="desc">Điều phối set.</div></td><td>07:00</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">07</td><td><div class="title">Check Post Supervisor</div><div class="desc">Đảm bảo đủ plate trước khi quay.</div></td><td>07:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">08</td><td><div class="title">Check BG AI / editor comp</div><div class="desc">Theo dõi tiến độ, stand by editor comp cho khách.</div></td><td>10:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">09</td><td><div class="title">Move về Studio trước đoàn</div><div class="desc">Phối hợp Châu set basecamp mới.</div></td><td>12:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="hanngo" class="section person-section">
+<div class="sectionhead"><h2>07 · Hân Ngô</h2><span class="code">8 TASKS · LIVE ASSIGNMENT</span></div>
+<div class="person">
+<div class="personhead"><div><div class="personname">Hân Ngô</div><div class="personsub">Role: To be assigned · Production responsibility board</div></div>
+<select data-person="Hân Ngô" onchange="personStatus(this)"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></div>
+<div style="overflow:auto"><table class="task"><thead><tr><th>#</th><th>HẠNG MỤC / CHI TIẾT</th><th>TIME</th><th>PRIORITY</th><th>STATUS</th><th>NOTES</th><th>ACTIONS</th></tr></thead><tbody><tr><td class="no">01</td><td><div class="title">Check asset trên người Talent</div><div class="desc">Đảm bảo asset OK trước giờ shoot.</div></td><td>06:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">02</td><td><div class="title">Cho khách check trước khi lên set</div><div class="desc">Client / Agency approval trước rolling.</div></td><td>07:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">03</td><td><div class="title">Check 2 kỹ thuật khách stand by</div><div class="desc">Xác nhận nhân sự kỹ thuật sẵn sàng.</div></td><td>07:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">04</td><td><div class="title">Điều phối set với Client / AGC</div><div class="desc">Theo dõi set và client.</div></td><td>07:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">05</td><td><div class="title">Theo dõi tiến độ / push set</div><div class="desc">Bám timeline và bottleneck.</div></td><td>08:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">06</td><td><div class="title">Làm việc với AD</div><div class="desc">Điều phối set.</div></td><td>07:00</td><td><span class="tag medium">MEDIUM</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">07</td><td><div class="title">Check Post Supervisor / plate</div><div class="desc">Đảm bảo đủ plate.</div></td><td>07:30</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr><tr><td class="no">08</td><td><div class="title">Check BG AI / editor comp</div><div class="desc">Stand by editor comp trên set.</div></td><td>10:00</td><td><span class="tag high">HIGH</span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td></tr></tbody></table></div></div></section>
+<section id="companymove" class="section">
+<div class="sectionhead"><h2>08 · Company Move & Safety</h2><span class="code">BA SON → STUDIO / LOCATION MỚI</span></div>
+<div class="grid2">
+<div class="panel"><h3 style="font:800 24px 'Barlow Condensed';margin:0 0 12px">Hero Bike · Quantum S Grey</h3><div class="critical">
+<div><b>Vận chuyển chuyên dụng</b><br>Đưa 1 xe về studio rửa/fix. Bắt buộc dùng xe thớt/xe bán tải chuyên dụng.</div>
+<div><b>Sạc cuốn chiếu</b><br>Ngay khi Hero cập bến bối cảnh mới, kỹ thuật cắm sạc ngay.</div>
+<div><b>Clean throughout</b><br>Xe xám là Hero Bike duy nhất quay chính; luôn giữ sạch cho beauty shots.</div>
+</div></div>
+<div class="panel"><h3 style="font:800 24px 'Barlow Condensed';margin:0 0 12px">Day 1 · Company Move</h3><div class="critical">
+<div><b>TECH SPLIT</b><br>Ngay khi đóng máy tại cầu Ba Son: 1 kỹ thuật khách về Studio chuẩn bị/sửa xe; 1 người đi cùng đoàn sang location mới.</div>
+<div><b>BASECAMP</b><br>Châu + Thùy Em di chuyển trước đoàn về Studio để set basecamp, chỗ Client/Agency gần khu vực bắt sóng tốt và storyboard Canva mới.</div>
+<div><b>CAMERA MOVE</b><br>Phantom, Jib & Slider đóng gói/bọc chống sốc kỹ để tránh lệch trục/va đập.</div>
+</div></div>
+</div>
+</section>
 
-            <!-- SEARCH & FILTER -->
-            <div class="flex gap-4 mb-6 no-print">
-                <div class="relative flex-1">
-                    <input type="text" id="globalSearch" oninput="renderAll()" placeholder="Tìm kiếm hạng mục, nhân sự, bối cảnh..." class="w-full bg-white border border-gray-300 px-10 py-3 text-sm focus:border-orange-500 outline-none">
-                    <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
-                </div>
-                <select id="globalFilter" onchange="renderAll()" class="bg-black text-white px-6 py-3 text-xs font-bold uppercase outline-none">
-                    <option value="ALL">All Tasks</option>
-                    <option value="TODO">To-do Only</option>
-                    <option value="DOING">Currently Doing</option>
-                    <option value="BLOCKED">Blocked ⚠️</option>
-                    <option value="HIGH">High Priority</option>
-                </select>
-            </div>
+<section id="notes" class="section">
+<div class="sectionhead"><h2>09 · Live Notes</h2><span class="code">INTERNAL WORKING AREA</span></div>
+<div class="grid2">
+<div class="panel"><h3 style="font:800 24px 'Barlow Condensed';margin:0 0 10px">Briefing Toàn Đoàn</h3><div class="critical">
+<div><b>ROUTE</b><br>Tuyến đường chạy trên cầu Ba Son.</div>
+<div><b>AXIS</b><br>Đặc biệt cú Dolly Zoom: giữ trục các tòa nhà thẳng đứng, không bị slop khi máy di chuyển nhanh.</div>
+<div><b>SAFETY GAP</b><br>Khoảng cách an toàn giữa Tracking Car và xe diễn viên.</div>
+<div><b>LANE</b><br>Nhả lane và khóa lane cuốn chiếu để không dính xe người dân vào khung hình.</div>
+</div></div>
+<div class="panel"><h3 style="font:800 24px 'Barlow Condensed';margin:0 0 10px">Live Notes</h3><textarea id="liveNotes" class="notes" placeholder="Client request · Issue · thay đổi shot · timeline · plate · BG AI..."></textarea></div>
+</div>
+<div class="actions"><button class="btn orange" onclick="addQuickTask()">+ ADD TASK</button><button class="btn" onclick="exportJSON()">EXPORT JSON</button><button class="btn" onclick="exportCSV()">EXPORT CSV</button><button class="btn" onclick="window.print()">PRINT</button><button class="btn" onclick="resetBoard()">RESET BOARD</button></div>
+</section>
+<footer class="footer"><span>DAT BIKE · QUANTUM S · PRODUCTION CONTROL</span><span>Last saved: <span id="clock">—</span></span></footer>
+</main>
+</div>
+<script>
+const KEY="datbikeProductionControlFixedV2";
+let saved=JSON.parse(localStorage.getItem(KEY)||"null")||{notes:"",statuses:{}};
+function allStatus(){return [...document.querySelectorAll(".taskstatus")]}
+function saveState(){
+ const rows=[...document.querySelectorAll(".person")];
+ rows.forEach(card=>{
+   const person=card.querySelector("[data-person]")?.dataset.person;
+   if(!person)return;
+   if(!saved.tbodyHTML)saved.tbodyHTML={};
+   saved.tbodyHTML[person]=card.querySelector("tbody").innerHTML;
+   saved.statuses[person]=[...card.querySelectorAll(".taskstatus")].map(x=>x.value);
+   card.querySelectorAll(".note").forEach((n,i)=>{if(!saved.notesByTask)saved.notesByTask={};saved.notesByTask[person+"_"+i]=n.innerText});
+ });
+ saved.notes=document.getElementById("liveNotes").value;
+ saved.updated=new Date().toLocaleString("vi-VN");
+ localStorage.setItem(KEY,JSON.stringify(saved));
+ update(); updatePersonHeaders(); applyFilters();
+}
+function loadState(){
+ Object.entries(saved.tbodyHTML||{}).forEach(([person,markup])=>{
+   const card=[...document.querySelectorAll(".person")].find(c=>c.querySelector("[data-person]")?.dataset.person===person);
+   if(card) card.querySelector("tbody").innerHTML=markup;
+ });
+ Object.entries(saved.statuses||{}).forEach(([person,vals])=>{
+   const card=[...document.querySelectorAll(".person")].find(c=>c.querySelector("[data-person]")?.dataset.person===person);
+   if(card) card.querySelectorAll(".taskstatus").forEach((s,i)=>{if(vals[i])s.value=vals[i]});
+ });
+ Object.entries(saved.notesByTask||{}).forEach(([key,val])=>{
+   const [person,i]=key.split("_");const card=[...document.querySelectorAll(".person")].find(c=>c.querySelector("[data-person]")?.dataset.person===person);const n=card?.querySelectorAll(".note")[+i];if(n)n.innerText=val;
+ });
+ document.getElementById("liveNotes").value=saved.notes||"";
+ document.getElementById("saved").textContent=saved.updated?"Last saved "+saved.updated:"Not saved yet";
+ update(); updatePersonHeaders(); applyFilters();
+}
+function updatePersonHeaders(){
+ document.querySelectorAll(".person").forEach(card=>{
+   const values=[...card.querySelectorAll(".taskstatus")].map(s=>s.value), sel=card.querySelector(".personhead select");
+   if(!sel)return;
+   const v=values.includes("BLOCKED")?"BLOCKED":values.length&&values.every(x=>x==="DONE")?"DONE":values.includes("DOING")?"DOING":"TODO";
+   sel.value=v;
+ });
+}
+function update(){
+ const tasks=allStatus(),done=tasks.filter(x=>x.value==="DONE").length,doing=tasks.filter(x=>x.value==="DOING").length;
+ const pct=tasks.length?Math.round(done/tasks.length*100):0;
+ document.getElementById("total").textContent=tasks.length;document.getElementById("done").textContent=done;document.getElementById("doing").textContent=doing;document.getElementById("pct").textContent=pct+"%";document.getElementById("prog").style.width=pct+"%";
+}
+function personStatus(sel){
+ const card=sel.closest(".person");card.querySelectorAll(".taskstatus").forEach(x=>x.value=sel.value);saveState();
+}
+function snapshotBoard(){
+ const out={date:"06/09/2026",source:"Call Sheet 06.09.26 · Day 1 of 2",people:{},notes:document.getElementById("liveNotes").value||""};
+ document.querySelectorAll(".person").forEach(card=>{
+   const person=card.querySelector("[data-person]").dataset.person;
+   out.people[person]=[...card.querySelectorAll("tbody tr")].map(r=>({
+     task:r.querySelector(".title")?.innerText||"",description:r.querySelector(".desc")?.innerText||"",time:r.cells[2]?.innerText||"",priority:r.querySelector(".tag")?.innerText||"",status:r.querySelector(".taskstatus")?.value||"",notes:r.querySelector(".note")?.innerText||""
+   }));
+ }); return out;
+}
+function applyFilters(){
+ const q=(document.getElementById("searchBox").value||"").trim().toLowerCase(), fs=document.getElementById("filterStatus").value, fp=document.getElementById("filterPriority").value;
+ document.querySelectorAll(".person").forEach(card=>{
+   let visible=0;
+   card.querySelectorAll("tbody tr").forEach(r=>{
+     const text=r.innerText.toLowerCase(), status=r.querySelector(".taskstatus")?.value||"", priority=r.querySelector(".tag")?.innerText||"";
+     const ok=(!q||text.includes(q))&&(fs==="ALL"||status===fs)&&(fp==="ALL"||priority===fp);
+     r.classList.toggle("hidden-row",!ok); if(ok)visible++;
+   });
+   const section=card.closest(".person-section"); if(section) section.style.display=visible||!q&&fs==="ALL"&&fp==="ALL"?"":"none";
+ });
+}
+function clearFilters(){document.getElementById("searchBox").value="";document.getElementById("filterStatus").value="ALL";document.getElementById("filterPriority").value="ALL";applyFilters()}
+function editRow(btn){
+ const r=btn.closest("tr"); if(!r)return;
+ const title=prompt("Tên công việc:",r.querySelector(".title")?.innerText||""); if(title===null)return;
+ const desc=prompt("Chi tiết:",r.querySelector(".desc")?.innerText||""); if(desc===null)return;
+ const time=prompt("Thời gian:",r.cells[2]?.innerText||"—"); if(time===null)return;
+ const priority=(prompt("Priority: HIGH / MEDIUM / LOW",r.querySelector(".tag")?.innerText||"MEDIUM")||"MEDIUM").toUpperCase();
+ r.querySelector(".title").innerText=title;r.querySelector(".desc").innerText=desc;r.cells[2].innerText=time;
+ const tag=r.querySelector(".tag");tag.className="tag "+priority.toLowerCase();tag.innerText=priority;
+ saveState();applyFilters();
+}
+function deleteRow(btn){if(!confirm("Xóa công việc này?"))return;btn.closest("tr")?.remove();saveState();renumber();applyFilters()}
+function renumber(){document.querySelectorAll(".person").forEach(card=>card.querySelectorAll("tbody tr").forEach((r,i)=>r.querySelector(".no").innerText=String(i+1).padStart(2,"0")))}
 
-            <!-- COMPANY MOVE TIMELINE (Directly from PDF) -->
-            <div class="bg-orange-50 border border-orange-200 p-8 mb-12">
-                <h3 class="oswald text-xl mb-6 flex items-center gap-2"><i class="fas fa-truck-moving"></i> Company Move Strategy</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="border-l-2 border-orange-500 pl-4">
-                        <div class="text-[10px] font-bold text-orange-600 uppercase">Move 1 (08:10 - 09:25)</div>
-                        <div class="text-sm font-bold mt-1">CẦU BA SON ➔ BÃI ĐẤT SÀI GÒN</div>
-                        <div class="text-xs text-gray-500 mt-1">Chuẩn bị vũng nước, quay Slomo splash xe.</div>
-                    </div>
-                    <div class="border-l-2 border-orange-500 pl-4">
-                        <div class="text-[10px] font-bold text-orange-600 uppercase">Move 2 (13:10 - 14:55)</div>
-                        <div class="text-sm font-bold mt-1">PHÍA SAU CẦU PHÚ MỸ ➔ STYLIST STUDIO</div>
-                        <div class="text-xs text-gray-500 mt-1">Chuyển toàn bộ máy và xe về Studio (Garage).</div>
-                    </div>
-                    <div class="border-l-2 border-orange-500 pl-4">
-                        <div class="text-[10px] font-bold text-orange-600 uppercase">Charging (Rolling)</div>
-                        <div class="text-sm font-bold mt-1">CẮM SẠC HERO BIKE</div>
-                        <div class="text-xs text-gray-500 mt-1">Ưu tiên sạc Quantum S ngay khi về bối cảnh mới.</div>
-                    </div>
-                </div>
-            </div>
+function addQuickTask(){
+ const person=prompt("Giao cho ai?\n\n"+[...document.querySelectorAll("[data-person]")].map(x=>x.dataset.person).join(" · "));if(!person)return;
+ const card=[...document.querySelectorAll(".person")].find(c=>c.querySelector("[data-person]")?.dataset.person===person);if(!card){alert("Không tìm thấy nhân sự.");return}
+ const name=prompt("Tên công việc:");if(!name)return;
+ const desc=prompt("Chi tiết:")||"",time=prompt("Thời gian:")||"—",priority=(prompt("Priority: HIGH / MEDIUM / LOW","MEDIUM")||"MEDIUM").toUpperCase();
+ const tbody=card.querySelector("tbody"),n=tbody.rows.length+1;
+ const tr=document.createElement("tr");tr.innerHTML=`<td class="no">${String(n).padStart(2,"0")}</td><td><div class="title"></div><div class="desc"></div></td><td></td><td><span class="tag"></span></td><td><select class="status taskstatus" onchange="saveState()"><option>TODO</option><option>DOING</option><option>DONE</option><option>BLOCKED</option></select></td><td><span class="note" contenteditable="true" onblur="saveState()">Ghi chú...</span></td><td><div class="row-actions"><button class="mini" type="button" onclick="editRow(this)">EDIT</button><button class="mini delete" type="button" onclick="deleteRow(this)">DEL</button></div></td>`;
+ tr.querySelector(".title").textContent=name;tr.querySelector(".desc").textContent=desc;tr.cells[2].textContent=time;tr.querySelector(".tag").textContent=priority;tr.querySelector(".tag").classList.add(priority.toLowerCase());tbody.appendChild(tr);saveState();
+}
+function exportJSON(){download("datbike-production-control-06-09-2026.json",JSON.stringify(snapshotBoard(),null,2),"application/json")}
+function exportCSV(){
+ let rows=[["Person","Task","Description","Time","Priority","Status","Notes"]];
+ document.querySelectorAll(".person").forEach(card=>{const p=card.querySelector("[data-person]").dataset.person;card.querySelectorAll("tbody tr").forEach(r=>rows.push([p,r.querySelector(".title")?.innerText||"",r.querySelector(".desc")?.innerText||"",r.cells[2]?.innerText||"",r.querySelector(".tag")?.innerText||"",r.querySelector(".taskstatus")?.value||"",r.querySelector(".note")?.innerText||""]))});
+ download("datbike-production-control.csv",rows.map(r=>r.map(x=>`"${String(x).replaceAll('"','""')}"`).join(",")).join("\n"),"text/csv");
+}
+function download(name,data,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function resetBoard(){if(confirm("Reset trạng thái và notes của board?")){localStorage.removeItem(KEY);location.reload()}}
+document.getElementById("liveNotes").addEventListener("input",saveState);
+document.getElementById("searchBox").addEventListener("input",applyFilters);
+document.getElementById("filterStatus").addEventListener("change",applyFilters);
+document.getElementById("filterPriority").addEventListener("change",applyFilters);
+setInterval(()=>document.getElementById("clock").textContent=new Date().toLocaleTimeString("vi-VN"),1000);
+const navLinks=[...document.querySelectorAll("#mainNav a, #mobileNav a")];
+const sectionIds=["overview","callsheet","bichchau","thugiang","vananh","nguyen","thuyem","hanngo","companymove","notes"];
+const navSections=sectionIds.map(id=>document.getElementById(id)).filter(Boolean);
 
-            <div id="personnel-tables-container" class="space-y-16">
-                <!-- Personnel tables will be injected here -->
-            </div>
-        </div>
-    </main>
+function setActiveNav(id){
+  navLinks.forEach(a=>a.classList.toggle("active",a.dataset.target===id));
+}
+navLinks.forEach(a=>{
+  a.addEventListener("click",e=>{
+    e.preventDefault();
+    const target=document.getElementById(a.dataset.target);
+    if(target){
+      target.scrollIntoView({behavior:"smooth",block:"start"});
+      history.replaceState(null,"","#"+a.dataset.target);
+      setActiveNav(a.dataset.target);
+    }
+  });
+});
 
-    <script>
-        // DATA STRUCTURE MAPPED FROM PDF CALLSHEET
-        let tasks = [
-            // BÍCH CHÂU - Logistics & Catering
-            { id: 1, owner: "Bích Châu", item: "Catering: Ăn sáng đoàn", detail: "Setup khu vực ăn sáng tại Basecamp Ba Son", time: "04:00 - 05:30", priority: "Medium", status: "TODO", notes: "Phục vụ 50 suất" },
-            { id: 2, owner: "Bích Châu", item: "Walkie Channels Setup", detail: "Phát đàm: #1 AD/Prod, #2 Camera, #3 Art, #5 Client", time: "04:30", priority: "High", status: "TODO", notes: "Check pin dự phòng" },
-            { id: 3, owner: "Bích Châu", item: "Client Call Support", detail: "Đón tiếp Client/Agency tại Cầu Ba Son", time: "05:00", priority: "High", status: "TODO", notes: "Chuẩn bị ghế/nước" },
-            { id: 4, owner: "Bích Châu", item: "Lunch Break Setup", detail: "Chuẩn bị khu vực ăn trưa tại bối cảnh Bãi Đất", time: "10:40 - 11:10", priority: "Medium", status: "TODO", notes: "Thực đơn đã duyệt" },
-            { id: 5, owner: "Bích Châu", item: "Rolling Dinner Control", detail: "Catering tại Stylist Studio", time: "17:40 - 18:10", priority: "Medium", status: "TODO", notes: "" },
+if("IntersectionObserver" in window){
+  const observer=new IntersectionObserver(entries=>{
+    const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+    if(visible[0]) setActiveNav(visible[0].target.id);
+  },{root:null,rootMargin:"-18% 0px -68% 0px",threshold:[0,.1,.25,.5]});
+  navSections.forEach(s=>observer.observe(s));
+}else{
+  window.addEventListener("scroll",()=>{
+    let current="overview";
+    navSections.forEach(s=>{if(window.scrollY>=s.offsetTop-160) current=s.id;});
+    setActiveNav(current);
+  },{passive:true});
+}
 
-            // THU GIANG - Art & Set Design
-            { id: 6, owner: "Thu Giang", item: "Set Ba Son (Location 1)", detail: "Check đạo cụ Xe Quantum S + Mũ bảo hiểm", time: "05:30 - 08:10", priority: "High", status: "TODO", notes: "Xe phải bóng loáng" },
-            { id: 7, owner: "Thu Giang", item: "Vũng Nước Splash (Bãi Đất)", detail: "Setup hố nước, nước bắn vào camera (Shot 26, 27)", time: "09:25 - 10:40", priority: "High", status: "TODO", notes: "Check vòi xịt" },
-            { id: 8, owner: "Thu Giang", item: "Green Screen Setup", detail: "Dựng phông xanh + Platform (Shot 36, 34)", time: "11:10 - 13:10", priority: "High", status: "TODO", notes: "Căng phẳng phông" },
-            { id: 9, owner: "Thu Giang", item: "Garage Set (Studio)", detail: "Setup interior Garage, Khung lưới sắt (Shot 3, 5)", time: "14:55 - 17:40", priority: "High", status: "TODO", notes: "Style Industrial" },
-            { id: 10, owner: "Thu Giang", item: "Logo Display", detail: "Góc quay logo trên thân xe (Shot 4.1, 4.2)", time: "17:40 - 19:10", priority: "Medium", status: "TODO", notes: "" },
+const backTop=document.getElementById("backTop");
+window.addEventListener("scroll",()=>{
+  backTop.classList.toggle("show",window.scrollY>500);
+},{passive:true});
+backTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 
-            // VÂN ANH - Stylist & Wardrobe
-            { id: 11, owner: "Vân Anh", item: "Talent Prep", detail: "Makeup & Hair hoàn thiện trước giờ On Set", time: "05:00 - 06:00", priority: "High", status: "TODO", notes: "" },
-            { id: 12, owner: "Vân Anh", item: "Mũ bảo hiểm Quantum", detail: "Chuẩn bị mũ bảo hiểm chính + Rig Mũ (Shot 8)", time: "05:30", priority: "High", status: "TODO", notes: "Check khớp Rig" },
-            { id: 13, owner: "Vân Anh", item: "Găng tay Talent", detail: "Check găng tay cho shot cận (Shot 7)", time: "15:25", priority: "Medium", status: "TODO", notes: "" },
-            { id: 14, owner: "Vân Anh", item: "Mũ đục lỗ (Cận mắt)", detail: "Chuẩn bị mũ bảo hiểm đục lỗ (Shot 21.2)", time: "12:40", priority: "High", status: "TODO", notes: "Cực kỳ quan trọng" },
-
-            // NGUYÊN - Equipment & Camera
-            { id: 15, owner: "Nguyên", item: "Raptor Team Ready", detail: "Tracking Car + Zolly gear setup tại Ba Son", time: "04:00", priority: "High", status: "TODO", notes: "Check intercom với xe" },
-            { id: 16, owner: "Nguyên", item: "Flycam Setup", detail: "Thay đổi set up sang Flycam (Location 1)", time: "07:30 - 08:10", priority: "High", status: "TODO", notes: "Check pin Flycam" },
-            { id: 17, owner: "Nguyên", item: "Slomo Gear (Slider/Rig)", detail: "Setup Rig đuôi xe + Low angle Slomo (Bãi đất)", time: "09:25 - 10:40", priority: "High", status: "TODO", notes: "Shot 26, 27" },
-            { id: 18, owner: "Nguyên", item: "Loawa Lens Setup", detail: "Push in đặc tả mắt (Shot 21.2)", time: "12:40", priority: "Medium", status: "TODO", notes: "" },
-            { id: 19, owner: "Nguyên", item: "Jib Arm / Slider Garage", detail: "Dolly out, Camera Roll, Jib Arm tại Studio", time: "14:55 - 17:40", priority: "High", status: "TODO", notes: "Shot 5, 7, 9, 8, 3" },
-
-            // THÙY EM - Account / Client Coordination
-            { id: 20, owner: "Thùy Em", item: "Client Briefing", detail: "Briefing góc máy Tracking Car Ba Son cho Agency", time: "05:30", priority: "Medium", status: "TODO", notes: "" },
-            { id: 21, owner: "Thùy Em", item: "Review Shot 36 (Cúp Datbike)", detail: "Check cảnh toàn trên đỉnh đồi (Green Screen)", time: "11:10", priority: "High", status: "TODO", notes: "Agency ký duyệt" },
-            { id: 22, owner: "Thùy Em", item: "Check Plate CGI", detail: "Đảm bảo các shot CGI (1, 2) đúng ý đồ brand", time: "17:40", priority: "High", status: "TODO", notes: "" },
-
-            // HÂN NGÔ - Producer / Wrap Control
-            { id: 23, owner: "Hân Ngô", item: "Safety Control", detail: "Kiểm soát an toàn di chuyển trên Cầu Ba Son", time: "05:30 - 08:10", priority: "High", status: "TODO", notes: "Walkie liên tục" },
-            { id: 24, owner: "Hân Ngô", item: "Company Move Move 1", detail: "Điều phối đoàn di chuyển về Bãi Đất", time: "08:10 - 09:25", priority: "High", status: "TODO", notes: "" },
-            { id: 25, owner: "Hân Ngô", item: "Company Move Move 2", detail: "Điều phối đoàn về Stylist Studio", time: "13:10 - 14:55", priority: "High", status: "TODO", notes: "" },
-            { id: 26, owner: "Hân Ngô", item: "Wrap Production", detail: "Kiểm tra dữ liệu (DIT) và thu hồi thiết bị", time: "19:10", priority: "High", status: "TODO", notes: "Cảm ơn toàn đoàn" }
-        ];
-
-        const personnel = ["Bích Châu", "Thu Giang", "Vân Anh", "Nguyên", "Thùy Em", "Hân Ngô"];
-
-        function init() {
-            const saved = localStorage.getItem('datbike_prod_v2_final');
-            if (saved) tasks = JSON.parse(saved);
-            renderAll();
-        }
-
-        function saveData() {
-            localStorage.setItem('datbike_prod_v2_final', JSON.stringify(tasks));
-        }
-
-        function updateStatus(id, newStatus) {
-            const task = tasks.find(t => t.id === id);
-            task.status = newStatus;
-            saveData();
-            renderAll();
-        }
-
-        function renderAll() {
-            const container = document.getElementById('personnel-tables-container');
-            const search = document.getElementById('globalSearch').value.toLowerCase();
-            const filter = document.getElementById('globalFilter').value;
-            container.innerHTML = '';
-
-            personnel.forEach(owner => {
-                const ownerTasks = tasks.filter(t => t.owner === owner);
-                const filtered = ownerTasks.filter(t => {
-                    const matchesSearch = t.item.toLowerCase().includes(search) || t.detail.toLowerCase().includes(search);
-                    const matchesFilter = filter === 'ALL' || 
-                                          (filter === 'HIGH' && t.priority === 'High') || 
-                                          (t.status === filter);
-                    return matchesSearch && matchesFilter;
-                });
-
-                if (filtered.length === 0 && search === "" && filter === "ALL") return;
-
-                const tableDiv = document.createElement('div');
-                tableDiv.id = `view-${owner}`;
-                tableDiv.innerHTML = `
-                    <div class="flex justify-between items-end mb-4 border-b-2 border-black pb-2">
-                        <h3 class="oswald text-2xl">${owner}</h3>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">${ownerTasks.filter(t => t.status === 'DONE').length}/${ownerTasks.length} COMPLETED</span>
-                    </div>
-                    <div class="overflow-x-auto bg-white border border-gray-200">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th width="50">STT</th>
-                                    <th width="200">Hạng mục công việc</th>
-                                    <th>Chi tiết</th>
-                                    <th width="120">Thời gian</th>
-                                    <th width="80">Priority</th>
-                                    <th width="120">Status</th>
-                                    <th width="150">Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${filtered.map((t, idx) => `
-                                    <tr>
-                                        <td class="text-gray-400 font-mono">${idx + 1}</td>
-                                        <td class="font-bold">${t.item}</td>
-                                        <td class="text-gray-600 leading-relaxed">${t.detail}</td>
-                                        <td class="font-semibold text-gray-500">${t.time}</td>
-                                        <td class="${t.priority === 'High' ? 'priority-high' : 'text-gray-400'} text-[10px] uppercase font-black">${t.priority}</td>
-                                        <td>
-                                            <select onchange="updateStatus(${t.id}, this.value)" class="w-full text-[10px] p-2 rounded-sm outline-none status-${t.status.toLowerCase()}">
-                                                <option value="TODO" ${t.status === 'TODO' ? 'selected' : ''}>TODO</option>
-                                                <option value="DOING" ${t.status === 'DOING' ? 'selected' : ''}>DOING</option>
-                                                <option value="DONE" ${t.status === 'DONE' ? 'selected' : ''}>DONE</option>
-                                                <option value="BLOCKED" ${t.status === 'BLOCKED' ? 'selected' : ''}>BLOCKED ⚠️</option>
-                                            </select>
-                                        </td>
-                                        <td class="text-[10px] italic text-blue-600">${t.notes}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-                container.appendChild(tableDiv);
-            });
-
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            const total = tasks.length;
-            const done = tasks.filter(t => t.status === 'DONE').length;
-            const pct = Math.round((done / total) * 100);
-            document.getElementById('overall-pct').innerText = pct + '%';
-
-            const matrix = document.getElementById('status-matrix');
-            matrix.innerHTML = personnel.map(owner => {
-                const pTasks = tasks.filter(t => t.owner === owner);
-                const pPct = Math.round((pTasks.filter(t => t.status === 'DONE').length / pTasks.length) * 100);
-                const isBlocked = pTasks.some(t => t.status === 'BLOCKED');
-                return `
-                    <div class="border-l-2 ${isBlocked ? 'border-red-500 bg-red-50' : 'border-black'} pl-3 py-1">
-                        <div class="text-[10px] font-black uppercase">${owner}</div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-mono">${pPct}%</span>
-                            <div class="w-16 bg-gray-100 h-1"><div class="bg-black h-1" style="width: ${pPct}%"></div></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function showSection(id) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + id).classList.add('active');
-            if (id === 'dashboard') {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            } else {
-                document.getElementById('view-' + id).scrollIntoView({behavior: 'smooth', block: 'start'});
-            }
-        }
-
-        function resetData() {
-            if(confirm('Reset toàn bộ tiến độ ngày quay?')) {
-                tasks = tasks.map(t => ({...t, status: 'TODO'}));
-                saveData();
-                renderAll();
-            }
-        }
-
-        init();
-    </script>
+setActiveNav(location.hash && document.getElementById(location.hash.slice(1)) ? location.hash.slice(1) : "overview");
+loadState();update();updatePersonHeaders();applyFilters();
+</script>
 </body>
 </html>
